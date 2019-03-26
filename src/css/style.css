@@ -187,15 +187,16 @@ a.nav-item {
 
 @media screen and (max-width: 650px) {
   .topnav a:not(:first-child) {display: none;}
-  .topnav a.icon {
-		padding-top: 20px;
-		padding-bottom: 20px;
-    display: block;
-  	font-size: 17px;
-		position: absolute;
+	.topnav .icon {
+		color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: block !important ;
+    font-size: 17px;
+    position: absolute;
     right: 0;
     top: 0;
-  }
+	}
   .topnav.responsive {
 		position: relative;
 	}
