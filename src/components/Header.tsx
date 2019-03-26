@@ -1,5 +1,6 @@
 import * as React from "react";
-import logo from "./images/amp-header-logo-low.png"
+import '../css/Header.css'
+import logo from "../images/amp-header-logo-low.png"
 
 // tslint:disable: no-console
 // tslint:disable-next-line: no-empty-interface
@@ -13,7 +14,6 @@ class App extends React.Component<INavProps,Partial<INavState>> {
   constructor(props: any) {
     super(props);
     this.state = { showResponsiveMenu: false };
-    // this.flipResponsiveMenu = this.flipResponsiveMenu.bind(this);
     console.log(this.state)
   }
 
@@ -31,7 +31,7 @@ class App extends React.Component<INavProps,Partial<INavState>> {
           href="https://discord.gg/5kPpTKw"
           target="_blank"
         >
-          <span>Discord</span>
+          <span>Discord </span>
           <i className="fab fa-discord" />
         </a>
         <a className="nav-item" href="/register">
