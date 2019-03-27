@@ -8,19 +8,19 @@ jobs:
 
     steps:
       - install_node:
-        name: "Update Node.js and npm"
-        command: |
-          curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
-          curl https://www.npmjs.com/install.sh | sudo bash
+          name: "Update Node.js and npm"
+          command: |
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
       - install_python:
-        name: "Install python and pip"
-        command: sudo apt-get install -y python3-pip
+          name: "Install python and pip"
+          command: sudo apt-get install -y python3-pip
       - install_aws_cli:
-        name: "Install aws cli"
-        command: pip3 install awscli --upgrade --user
+          name: "Install aws cli"
+          command: pip3 install awscli --upgrade --user
       - checkout
       - build:
-        command: 'node --version && npm --version && python3 --version && pip3 --version'
+          command: 'node --version && npm --version && python3 --version && pip3 --version'
 
   deploy-prod:
     docker:
