@@ -7,15 +7,15 @@ jobs:
     working_directory: ~/atomic-site
 
     steps:
-      - install_node:
+      - run:
           name: "Update Node.js and npm"
           command: |
             curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
             curl https://www.npmjs.com/install.sh | sudo bash
-      - install_python:
+      - run:
           name: "Install python and pip"
           command: sudo apt-get install -y python3-pip
-      - install_aws_cli:
+      - run:
           name: "Install aws cli"
           command: pip3 install awscli --upgrade --user
       - checkout
