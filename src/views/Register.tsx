@@ -4,6 +4,8 @@ import Container from "../components/Container";
 import Header from "../components/Header";
 import "../css/Form.css";
 
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || ""; 
+
 interface IFormData {
   confirmPassword: string;
   key: string;
@@ -172,55 +174,19 @@ class Register extends React.Component {
       return;
     }
 
-    axios.post("/register", this.state.formData).then(response => {
-      console.log(response)
-      // window.sessionStorage.setItem("authToken", response.token);
-      // const token = window.sessionStorage.getItem('authToken');
-      // if (token) {
-      //   document.cookie = "jwt=" + token
-      // }
+    axios.post(REACT_APP_BACKEND_URL+"/register", this.state.formData).then(response => {
+      const { data } = response;
+      window.sessionStorage.setItem("authToken", data.token);
+      const token = window.sessionStorage.getItem('authToken');
+      if (token) {
+        document.cookie = "jwt=" + token
+      }
+      document.location.href = "/"
     }).catch(error => {
       this.setState({ error: error.message })
     }).then(() => {
       this.setState({ submitting: false })
     })
-    //   $('form#register').on("submit", function (e) {
-    //     e.preventDefault();
-    //     if (!submitting) {
-    //       submitting = true;
-    //       $('form#register input[type=submit]').css('opacity', 0.6)
-    //       const formdata = $(this).serialize();
-    //       $.ajax({
-    //         url: '/register',
-    //         type: 'POST',
-    //         data: formdata,
-    //         dataType: "html",
-    //         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-    //         success: function (response) {
-    //           submitting = false;
-    //           $('form#register input[type=submit]').css('opacity', 1.0)
-    //           const data = JSON.parse(response);
-    //           window.sessionStorage.setItem("authToken", data.token);
-
-    //           const token = window.sessionStorage.getItem('authToken');
-    //           if (token) {
-    //             document.cookie = "jwt=" + token
-    //           }
-    //           setTimeout(() => {
-    //             document.location.href = "/"
-    //           }, 500)
-    //         },
-    //         error: function (xhr, resp, text) {
-    //           submitting = false;
-    //           $('form#register input[type=submit]').css('opacity', 1.0)
-    //           if (text = "Unauthorized") {
-    //             console.log("Account Creation Failed")
-    //             $("p.error").html("Account Creation Failed")
-    //           }
-    //         }
-    //       });
-    //     }
-    // })
   }
 }
 
