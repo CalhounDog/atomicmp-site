@@ -2,8 +2,6 @@ import * as React from "react";
 import '../css/Header.css'
 import logo from "../images/amp-header-logo-low.png"
 
-// tslint:disable: no-console
-// tslint:disable-next-line: no-empty-interface
 interface INavProps {
   active: string;
 }
@@ -20,7 +18,7 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
   constructor(props: any) {
     super(props);
     this.state = { showResponsiveMenu: false };
-    console.log(this.state)
+    this.flipResponsiveMenu = this.flipResponsiveMenu.bind(this);
   }
 
   public render() {
@@ -48,8 +46,7 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
         </a>
         <span
           className="nav-item icon"
-          // tslint:disable-next-line: jsx-no-lambda
-          onClick={() => this.flipResponsiveMenu}
+          onClick={this.flipResponsiveMenu}
         >
           &#9776;
         </span>
@@ -58,7 +55,6 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
   }
 
   private flipResponsiveMenu() {
-    console.log(this.state)
     this.setState({showResponsiveMenu: !this.state.showResponsiveMenu})
   }
 }
