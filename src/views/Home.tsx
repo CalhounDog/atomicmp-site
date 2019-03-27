@@ -9,7 +9,7 @@ class Home extends React.Component {
     return (
       <div>
         <Header active="home" />
-        <div style={{ "max-width": "840px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "840px", margin: "0 auto" }}>
           <img
             src={banner}
           />
