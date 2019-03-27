@@ -22,7 +22,9 @@
   text-decoration: none;
   font-size: 17px;
 	text-shadow: 1px 1px 3px black;
-	transition: all .1s ease-in-out;
+  transition: all .1s ease-in-out;
+  height: 65px;
+  box-sizing: border-box;
 }
 
 a.nav-item, a.nav-item:visited {
@@ -31,6 +33,10 @@ a.nav-item, a.nav-item:visited {
 
 .nav-item:hover {
   background-color: var(--header-accent);
+}
+
+.topnav {
+  height: 65px;
 }
 
 .topnav #hamburger {
@@ -66,6 +72,7 @@ a.nav-item, a.nav-item:visited {
   
 
   .topnav.responsive {
+    height: initial;
 		position: relative;
 	}
   .topnav.responsive #hamburger {
