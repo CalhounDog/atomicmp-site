@@ -4,13 +4,19 @@ import logo from "../images/amp-header-logo-low.png"
 
 // tslint:disable: no-console
 // tslint:disable-next-line: no-empty-interface
-interface INavProps {}
+interface INavProps {
+  active: string;
+}
 
 interface INavState {
   showResponsiveMenu: boolean;
 }
 
-class App extends React.Component<INavProps,Partial<INavState>> {
+class Header extends React.Component<INavProps,Partial<INavState>> {
+  public state = {
+    showResponsiveMenu: false
+  }
+  
   constructor(props: any) {
     super(props);
     this.state = { showResponsiveMenu: false };
@@ -57,4 +63,4 @@ class App extends React.Component<INavProps,Partial<INavState>> {
   }
 }
 
-export default App;
+export default Header;
