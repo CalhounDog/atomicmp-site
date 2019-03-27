@@ -10,7 +10,7 @@ class Home extends React.Component {
       <div>
         <Header active="home" />
         <div style={{ maxWidth: "840px", margin: "0 auto" }}>
-          <img
+          <img style={{ width: "100%" }}
             src={banner}
           />
         </div>
