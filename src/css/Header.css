@@ -33,8 +33,12 @@ a.nav-item, a.nav-item:visited {
   background-color: var(--header-accent);
 }
 
-.topnav .icon {
+.topnav #hamburger {
   display: none;
+}
+
+.topnav * {
+  user-select: none;
 }
 
 .topnav a.discord-icon {
@@ -48,20 +52,23 @@ a.nav-item, a.nav-item:visited {
 
 @media screen and (max-width: 650px) {
   .topnav a:not(:first-child) {display: none;}
-	.topnav .icon {
+	#hamburger {
+    cursor: pointer;
 		color: white;
     padding-top: 20px;
     padding-bottom: 20px;
-    display: block !important ;
+    display: block !important;
     font-size: 17px;
     position: absolute;
     right: 0;
     top: 0;
-	}
+  }
+  
+
   .topnav.responsive {
 		position: relative;
 	}
-  .topnav.responsive a.icon {
+  .topnav.responsive #hamburger {
 		padding-top: 20px;
 		padding-bottom: 20px;
   	font-size: 17px;
@@ -69,7 +76,7 @@ a.nav-item, a.nav-item:visited {
     right: 0;
     top: 0;
   }
-  .topnav.responsive a:not(:first-child):not(.icon) {
+  .topnav.responsive a:not(:first-child):not(#hamburger) {
 		padding: 14px 16px;
 	}
   .topnav.responsive a {

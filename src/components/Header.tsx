@@ -46,6 +46,7 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
         </Link>
         <span
           className="nav-item icon"
+          id="hamburger"
           onClick={this.flipResponsiveMenu}
         >
           &#9776;
