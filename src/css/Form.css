@@ -1,0 +1,40 @@
+form {
+	margin: 20px 0;
+}
+
+form input{
+	font-family: "Roboto",sans-serif;
+	display:block;
+	clear:both;
+	padding:3px;
+  color: var(--header-accent);
+  background: white;
+}
+
+form input[type="submit"] {
+	color: white;
+	text-shadow: 1px 1px 1px var(--header-accent);
+	font-size: 18px;
+	background-color: var(--header-main);
+	border-top: 1px solid var(--header-accent);
+	border-right: 1px solid var(--header-accent);
+	border-bottom: 2px solid var(--header-accent);
+	border-left: 1px solid var(--header-accent);
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin-top: 12px;
+}
+
+form input[type="submit"]:hover {
+	background-color: var(--header-accent);
+	border-top: 1px solid var(--header-accent);
+	border-right: 1px solid var(--header-accent);
+	border-bottom: 2px solid var(--header-accent);
+	border-left: 1px solid var(--header-accent);
+	border-radius: 5px;
+	padding: 5px 10px;
+	box-shadow: 1px 1px 3px 1px #DDDDDD;
+	-webkit-box-shadow: 1px 1px 3px 1px #DDDDDD;
+	-moz-box-shadow: 1px 1px 3px 1px #DDDDDD;
+	-o-box-shadow: 1px 1px 3px 1px #DDDDDD;
+}
