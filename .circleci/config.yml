@@ -1,0 +1,43 @@
+version: 2
+jobs:
+
+  build:
+    docker:
+      - image: ubuntu:14.04
+    working_directory: ~/atomic-site
+
+    steps:
+      - install_node:
+        name: "Update Node.js and npm"
+        command: |
+          curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+          curl https://www.npmjs.com/install.sh | sudo bash
+      - install_python:
+        name: "Install python and pip"
+        command: sudo apt-get install -y python3-pip
+      - install_aws_cli:
+        name: "Install aws cli"
+        command: pip3 install awscli --upgrade --user
+      - checkout
+      - build:
+        command: 'node --version && npm --version && python3 --version && pip3 --version'
+
+  deploy-prod:
+    docker:
+      - image: ubuntu:14.04
+    working_directory: /tmp/atomic-site
+    steps:
+      - run:
+          name: Deploy if tests pass and branch is Master
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
