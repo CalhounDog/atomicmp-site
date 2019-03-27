@@ -1,10 +1,10 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import '../css/Header.css'
 import logo from "../images/amp-header-logo-low.png"
 
-interface INavProps {
-  active: string;
-}
+// tslint:disable-next-line: no-empty-interface
+interface INavProps {}
 
 interface INavState {
   showResponsiveMenu: boolean;
@@ -27,23 +27,23 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
         className={this.state.showResponsiveMenu? "topnav responsive": "topnav"}
         id="topnav"
       >
-        <a className="nav-logo" href="/">
+        <Link className="nav-logo" to="/">
           <img src={logo} style={{ width: "300px", height: "58px" }} />
-        </a>
-        <a
+        </Link>
+        <Link
           className="nav-item discord-icon"
-          href="https://discord.gg/5kPpTKw"
+          to="https://discord.gg/5kPpTKw"
           target="_blank"
         >
           <span>Discord </span>
           <i className="fab fa-discord" />
-        </a>
-        <a className="nav-item" href="/register">
+        </Link>
+        <Link className="nav-item" to="/register">
           Register
-        </a>
-        <a className="nav-item" href="/login">
+        </Link>
+        <Link className="nav-item" to="/login">
           Login
-        </a>
+        </Link>
         <span
           className="nav-item icon"
           onClick={this.flipResponsiveMenu}

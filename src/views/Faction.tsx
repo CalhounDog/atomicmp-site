@@ -1,6 +1,5 @@
 import * as React from "react";
 import Container from "../components/Container"
-import Header from "../components/Header"
 
 interface IFactionState {
   factionFound: boolean;
@@ -27,7 +26,6 @@ class Faction extends React.Component {
   public render() {
     return (
       <div>
-        <Header active="faction" />
         <Container>
           <h1>Faction</h1>
           {this.state.factionFound

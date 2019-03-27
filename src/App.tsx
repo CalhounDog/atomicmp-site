@@ -1,7 +1,13 @@
-import { createBrowserHistory } from "history";
 import * as React from "react";
-import { Redirect, Route, Router, Switch } from "react-router";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from "react-router-dom";
 import "./css/index.css";
+
+import Header from "./components/Header"
 
 import Faction from './views/Faction';
 import Home from "./views/Home";
@@ -11,16 +17,20 @@ import Register from "./views/Register";
 class App extends React.Component {
   public render() {
     return (
-      <Router history={createBrowserHistory()}>
-        <Switch>
-          <Route exact={true} path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/faction" component={Faction} />
-          <Redirect from='*' to='/' />
-        </Switch>
+      <Router>
+        <div>
+          <Header />
+          <Switch>
+            <Route exact={true} path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/faction" component={Faction} />
+            <Redirect from="*" to="/" />
+          </Switch>
+          <div id="background" />
+        </div>
       </Router>
-    )
+    );
   }
 }
 

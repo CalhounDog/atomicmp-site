@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as React from "react";
 import Container from "../components/Container"
-import Header from "../components/Header";
+import "../css/Form.css";
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || ""; 
 
@@ -38,12 +38,10 @@ class Login extends React.Component {
   public render() {
     return (
       <div>
-        <Header active="login" />
         <Container>
           <h1>Login</h1>
           {this.renderForm()}
         </Container>
-        <div id="background" />
       </div>
     );
   }

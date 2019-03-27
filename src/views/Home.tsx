@@ -1,6 +1,5 @@
 import * as React from "react";
 import Container from "../components/Container"
-import Header from "../components/Header"
 import banner from "../images/amp-splash-logo-shadowed.png"
 import arena from "../images/arena_low.png"
 
@@ -8,7 +7,6 @@ class Home extends React.Component {
   public render() {
     return (
       <div>
-        <Header active="home" />
         <div style={{ maxWidth: "840px", margin: "0 auto" }}>
           <img style={{ width: "100%" }}
             src={banner}
