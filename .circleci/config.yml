@@ -32,10 +32,7 @@ jobs:
           command: sudo apt-get update && sudo apt-get install -y python3 python3-pip
       - run:
           name: "Install aws cli"
-          command: pip3 install awscli --upgrade --user && export PATH=~/.local/bin:$PATH
-      - run:
-          name: Configure AWS CLI
-          command: aws config
+          command: pip3 install awscli --upgrade --user && export PATH=~/.local/bin:$PATH && aws config
       - run:
           name: Deploy build directory to S3
           command: aws s3 sync build s3://atomic-site-stage --delete
