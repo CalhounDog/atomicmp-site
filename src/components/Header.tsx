@@ -2,19 +2,22 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import '../css/Header.css'
 import logo from "../images/amp-header-logo-low.png"
+import IUser from "../models/IUser";
 
 // tslint:disable-next-line: no-empty-interface
-interface INavProps {}
+interface INavProps {
+  user: (IUser | undefined)
+}
 
 interface INavState {
   showResponsiveMenu: boolean;
 }
 
-class Header extends React.Component<INavProps,Partial<INavState>> {
+class Header extends React.Component<INavProps, Partial<INavState>> {
   public state = {
     showResponsiveMenu: false
-  }
-  
+  };
+
   constructor(props: any) {
     super(props);
     this.state = { showResponsiveMenu: false };
@@ -24,7 +27,9 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
   public render() {
     return (
       <nav
-        className={this.state.showResponsiveMenu? "topnav responsive": "topnav"}
+        className={
+          this.state.showResponsiveMenu ? "topnav responsive" : "topnav"
+        }
         id="topnav"
       >
         <Link className="nav-logo" to="/">
@@ -41,6 +46,14 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
         <Link className="nav-item" to="/register">
           Register
         </Link>
+
+        {
+          !this.props.user ? undefined :
+          <Link className="nav-item" to="/register">
+              {this.props.user}
+          </Link>
+        }
+
         <Link className="nav-item" to="/login">
           Login
         </Link>
@@ -56,7 +69,7 @@ class Header extends React.Component<INavProps,Partial<INavState>> {
   }
 
   private flipResponsiveMenu() {
-    this.setState({showResponsiveMenu: !this.state.showResponsiveMenu})
+    this.setState({ showResponsiveMenu: !this.state.showResponsiveMenu });
   }
 }
 

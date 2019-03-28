@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import { Redirect } from 'react-router-dom';
 import Container from "../components/Container"
 import "../css/Form.css";
 
@@ -8,6 +9,7 @@ const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 // tslint:disable: no-console
 
 interface ILoginState {
+  redirect: boolean;
   error: string;
   submitting: boolean;
   formData: {
@@ -28,6 +30,7 @@ class Login extends React.Component {
         password: "",
         username: ""
       },
+      redirect: false,
       submitting: false
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this)
@@ -36,6 +39,9 @@ class Login extends React.Component {
   }
 
   public render() {
+    if (this.state.redirect) {
+      return <Redirect to='/somewhere' />
+    }
     return (
       <div>
         <Container>
@@ -110,7 +116,7 @@ class Login extends React.Component {
         if (token) {
           document.cookie = "jwt=" + token
         }
-        document.location.href = "/";
+        this.setState({redirect: true})
       })
       .catch((error) => {
         this.setState({ error: error.message });
