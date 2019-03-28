@@ -32,6 +32,9 @@ jobs:
       - image: ubuntu:14.04
     working_directory: ~/atomic-site
     steps:
+      - run:
+          command: pwd && ls
+
       - attach_workspace:
           at: ~/atomic-site
       - run:
