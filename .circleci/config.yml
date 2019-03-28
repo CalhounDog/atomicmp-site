@@ -34,7 +34,7 @@ jobs:
     steps:
       - run:
           name: Install latest apt packages
-          command: sudo apt-get update && sudo apt-get install build-essential checkinstall ca-certificates
+          command: sudo apt-get update && sudo apt-get install ca-certificates
 
       - attach_workspace:
           at: ~/atomic-site
