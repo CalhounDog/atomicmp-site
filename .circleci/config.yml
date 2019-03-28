@@ -35,7 +35,7 @@ jobs:
           command: echo "PATH=~/.local/bin:$PATH" >> ~/.bash_profile && source ~/.bash_profile
       - run:
           name: "Install aws cli"
-          command: pip3 install awscli --upgrade --user &&  && aws configure
+          command: pip3 install awscli --upgrade --user
       - run:
           name: "Configure aws cli"
           command: |
