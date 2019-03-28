@@ -20,6 +20,9 @@ jobs:
       - run:
           name: "Testing site"
           command: npm run test
+      - run:
+          name: "Making save file"
+          command: mkdir /tmp/atomic-site/build
       - persist_to_workspace:
           root: /tmp/atomic-site/build
           path:
