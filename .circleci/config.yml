@@ -9,19 +9,27 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install python and pip"
-          command: sudo apt-get install -y python3-pip
+          name: "Install NPM dependencies"
+          command: npm install
       - run:
-          name: "Install aws cli"
-          command: pip3 install awscli --upgrade --user
+          name: "Building site"
+          command: npm run build
       - run:
-          command: 'node --version && npm --version && python3 --version && pip3 --version'
+          name: "Testing site"
+          command: npm run test
+
 
   deploy-prod:
     docker:
       - image: ubuntu:14.04
     working_directory: /tmp/atomic-site
     steps:
+      - run:
+          name: "Install python and pip"
+          command: sudo apt-get install -y python3-pip
+      - run:
+          name: "Install aws cli"
+          command: pip3 install awscli --upgrade --user
       - run:
           name: Deploy if tests pass and branch is Master
 
