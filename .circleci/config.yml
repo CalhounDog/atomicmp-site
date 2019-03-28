@@ -28,14 +28,11 @@ jobs:
     working_directory: /tmp/atomic-site
     steps:
       - run:
-          name: "Diagnosing what's going on"
-          command: which apt-get
-      - run:
           name: "Install python and pip"
           command: sudo apt-get update && sudo apt-get install -y python3 python3-pip
       - run:
           name: "Install aws cli"
-          command: pip3 install awscli --upgrade --user
+          command: pip3 install awscli --upgrade --user --without-libyaml
       - run:
           name: Configure AWS CLI
           command: aws config
