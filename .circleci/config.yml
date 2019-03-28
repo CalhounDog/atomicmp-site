@@ -1,0 +1,50 @@
+version: 2
+jobs:
+
+  build:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/atomic-site
+
+    steps:
+      - checkout
+      - run:
+          name: "Install NPM dependencies"
+          command: npm install
+      - run:
+          name: "Building site"
+          command: npm run build
+      - run:
+          name: "Testing site"
+          command: npm run test
+
+
+  deploy-prod:
+    docker:
+      - image: ubuntu:14.04
+    working_directory: /tmp/atomic-site
+    steps:
+      - run:
+          name: "Install python and pip"
+          command: sudo apt-get install -y python3-pip
+      - run:
+          name: "Install aws cli"
+          command: pip3 install awscli --upgrade --user
+      - run:
+          name: Configure AWS CLI
+          command: aws config
+      - run:
+          name: Deploy build directory to S3
+          command: aws s3 sync build s3://atomic-site-stage --delete
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
