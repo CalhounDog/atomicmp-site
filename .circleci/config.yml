@@ -31,7 +31,11 @@ jobs:
           name: "Install aws cli"
           command: pip3 install awscli --upgrade --user
       - run:
-          name: Deploy if tests pass and branch is Master
+          name: Configure AWS CLI
+          command: aws config
+      - run:
+          name: Deploy build directory to S3
+          command: aws s3 sync build s3://atomic-site-stage --delete
 
 workflows:
   version: 2
