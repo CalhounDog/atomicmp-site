@@ -17,13 +17,13 @@ jobs:
       - run:
           name: "Building site"
           command: npm run build
-      - persist_to_workspace:
-          root: ~/atomic-site
-          path:
-            - build
       - run:
           name: "Testing site"
           command: npm run test
+      - persist_to_workspace:
+          root: /tmp/atomic-site/build
+          path:
+            - ~/atomic-site/build/*
 
 
   deploy-prod:
