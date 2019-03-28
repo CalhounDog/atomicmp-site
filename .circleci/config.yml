@@ -29,11 +29,12 @@ jobs:
 
   deploy-prod:
     docker:
-      - image: ubuntu:14.04
+      - image: circleci/node:latest
     working_directory: ~/atomic-site
     steps:
       - run:
-          command: pwd && ls
+          name: Install latest apt packages
+          command: sudo apt-get update && sudo apt-get install build-essential checkinstall ca-certificates
 
       - attach_workspace:
           at: ~/atomic-site
