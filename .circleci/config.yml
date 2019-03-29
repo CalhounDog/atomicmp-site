@@ -55,7 +55,7 @@ jobs:
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY &&
             aws configure set default.region $AWS_DEFAULT_REGION &&
             aws configure set default.output json
-            aws s3 sync build s3://atomic-site-stage --delete
+            aws s3 sync build s3://www.atomicmp.com --delete
 
 workflows:
   version: 2
