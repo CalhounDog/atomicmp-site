@@ -4,7 +4,6 @@ import '../css/Header.css'
 import logo from "../images/amp-header-logo-low.png"
 import IUser from "../models/IUser";
 
-// tslint:disable-next-line: no-empty-interface
 interface INavProps {
   user: (IUser | undefined)
 }
@@ -53,14 +52,14 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         <Link className="nav-logo" to="/">
           <img src={logo} style={{ width: "300px", height: "58px" }} />
         </Link>
-        <Link
+        <a
           className="nav-item discord-icon"
-          to="https://discord.gg/5kPpTKw"
+          href="https://discord.gg/5kPpTKw"
           target="_blank"
         >
           <span>Discord </span>
           <i className="fab fa-discord" />
-        </Link>
+        </a>
 
         {this.state.isLoggedIn
           ? this.renderAuthenticatedHeaderLinks()
