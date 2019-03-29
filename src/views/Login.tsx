@@ -40,7 +40,7 @@ class Login extends React.Component {
 
   public render() {
     if (this.state.redirect) {
-      return <Redirect to='/somewhere' />
+      return <Redirect to='/' />
     }
     return (
       <div>
@@ -104,7 +104,6 @@ class Login extends React.Component {
 
   public submitForm(event: any) {
     event.preventDefault()
-    console.log(this.state.formData)
     this.setState({ submitting: true })
     axios
       .post(REACT_APP_BACKEND_URL + "/login", this.state.formData)
@@ -119,10 +118,7 @@ class Login extends React.Component {
         this.setState({redirect: true})
       })
       .catch((error) => {
-        this.setState({ error: error.message });
-      })
-      .then(() => {
-        this.setState({ submitting: false });
+        this.setState({ error: error.message, submitting: false });
       });
     
   }

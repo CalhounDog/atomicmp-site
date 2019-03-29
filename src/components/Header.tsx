@@ -11,20 +11,38 @@ interface INavProps {
 
 interface INavState {
   showResponsiveMenu: boolean;
+  user: any;
+  isLoggedIn: boolean;
 }
 
 class Header extends React.Component<INavProps, Partial<INavState>> {
   public state = {
-    showResponsiveMenu: false
+    isLoggedIn: false,
+    showResponsiveMenu: false,
+    user: {},
   };
 
   constructor(props: any) {
     super(props);
-    this.state = { showResponsiveMenu: false };
+    this.state = {
+      isLoggedIn: false,
+      showResponsiveMenu: false,
+      user: {},
+    };
     this.flipResponsiveMenu = this.flipResponsiveMenu.bind(this);
+    this.renderUnauthenticatedHeaderLinks = this.renderUnauthenticatedHeaderLinks.bind(this);
+    this.renderAuthenticatedHeaderLinks = this.renderAuthenticatedHeaderLinks.bind(this);
+  }
+  public componentWillReceiveProps(nextProps: any) {
+    console.log(nextProps)
+    this.setState({
+      isLoggedIn: (nextProps.user !== undefined),
+        user: {...nextProps.user}
+    });
   }
 
   public render() {
+    console.log(this.state)
     return (
       <nav
         className={
@@ -43,20 +61,12 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
           <span>Discord </span>
           <i className="fab fa-discord" />
         </Link>
-        <Link className="nav-item" to="/register">
-          Register
-        </Link>
 
-        {
-          !this.props.user ? undefined :
-          <Link className="nav-item" to="/register">
-              {this.props.user}
-          </Link>
+        {this.state.isLoggedIn
+          ? this.renderAuthenticatedHeaderLinks()
+          : this.renderUnauthenticatedHeaderLinks()
         }
 
-        <Link className="nav-item" to="/login">
-          Login
-        </Link>
         <span
           className="nav-item icon"
           id="hamburger"
@@ -66,6 +76,33 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         </span>
       </nav>
     );
+  }
+
+  private renderUnauthenticatedHeaderLinks() {
+    return (
+      <div>
+        <Link className="nav-item" to="/register">
+          Register
+        </Link>
+        <Link className="nav-item" to="/login">
+          Login
+        </Link>
+      </div>
+    )
+  }
+  private renderAuthenticatedHeaderLinks() {
+    const user = Object.assign({username: "", user_id: 0}, this.state.user);
+    const userURl = `/user/${user.user_id}`
+    return (
+      <div>
+        <Link className="nav-item" to={userURl}>
+          {user.username}
+        </Link>
+        <Link className="nav-item" to="/logout">
+          Logout
+        </Link>
+      </div>
+    )
   }
 
   private flipResponsiveMenu() {
