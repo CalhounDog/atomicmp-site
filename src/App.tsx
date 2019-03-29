@@ -57,7 +57,6 @@ class App extends React.Component {
     const token = window.sessionStorage.getItem('authToken');
     if (token) {
       axios.get(REACT_APP_BACKEND_URL + "/me", {
-        headers: { 'Cookie': "jwt=" + token},
         withCredentials: true
       }).then((response) => {
         let user;
