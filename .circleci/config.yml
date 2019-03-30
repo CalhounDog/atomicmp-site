@@ -11,6 +11,9 @@ jobs:
       - attach_workspace:
           at: ~/atomic-site
       - run:
+          name: Source .env
+          command: source .env.production
+      - run:
           name: Install latest apt packages
           command: sudo apt-get update && sudo apt-get install build-essential checkinstall
       - run:
