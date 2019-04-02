@@ -25,6 +25,8 @@
   transition: all .1s ease-in-out;
   height: 65px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
 a.nav-item, a.nav-item:visited {
@@ -89,12 +91,10 @@ a.nav-item, a.nav-item:visited {
     right: 0;
     top: 0;
   }
-  .topnav.responsive a:not(:first-child):not(#hamburger) {
-		padding: 14px 16px;
-	}
-  .topnav.responsive a {
+  .topnav.responsive a, .topnav.responsive button {
     float: none;
     display: block;
     text-align: left;
+    width: 100%;
   }
 }
