@@ -18,7 +18,8 @@ import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
 
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || ""; 
+// tslint:disable: jsx-no-lambda
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 
 class App extends React.Component {
 
@@ -32,6 +33,7 @@ class App extends React.Component {
       user: undefined
     };
     this.fetchAuth = this.fetchAuth.bind(this);
+    this.logout = this.logout.bind(this);
     this.fetchAuth();
   }
 
@@ -39,11 +41,24 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <Header user={this.state.user}/>
+          <Header user={this.state.user} logout={this.logout} />
           <Switch>
             <Route exact={true} path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
+            <Route
+              path="/login"
+              render={(routeProps) => (
+                <Login {...routeProps} fetchAuth={() => this.fetchAuth()} />
+              )}
+            />
+            <Route
+              path="/register"
+              render={(routeProps) => (
+                <Register
+                  {...routeProps}
+                  fetchAuth={() => this.fetchAuth()}
+                />
+              )}
+            />
             <Route path="/faction" component={Faction} />
             <Redirect from="*" to="/" />
           </Switch>
@@ -53,23 +68,33 @@ class App extends React.Component {
     );
   }
 
-  public fetchAuth(): (IUser | undefined) {
+  public async fetchAuth() {
     const token = window.sessionStorage.getItem('authToken');
     if (token) {
-      axios.get(REACT_APP_BACKEND_URL + "/me", {
-        withCredentials: true
-      }).then((response) => {
+      const instance = axios.create({
+        baseURL: REACT_APP_BACKEND_URL,
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'json',
+        timeout: 5000
+      });
+      const response = await instance.get("/me")
+      try {
         let user;
-        console.log(response)
         if (response.data !== "") {
           user = response.data;
         }
-        this.setState({ user })
-      }).catch(err => {
+        this.setState({ user });
+      }
+      catch(err) {
         console.error(err.message);
-      });
+      }
     }
-    return undefined;
+  }
+
+  public async logout() {
+    window.sessionStorage.removeItem("authToken");
+    this.setState({ user: undefined });
+    document.location.href = "/";
   }
 }
 

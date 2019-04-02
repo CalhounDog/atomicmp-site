@@ -4,9 +4,11 @@ import { Redirect } from 'react-router-dom';
 import Container from "../components/Container"
 import "../css/Form.css";
 
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || ""; 
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 
-// tslint:disable: no-console
+interface ILoginProps {
+  fetchAuth: () => void;
+}
 
 interface ILoginState {
   redirect: boolean;
@@ -18,11 +20,12 @@ interface ILoginState {
   }
 }
 
-class Login extends React.Component {
+class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
   public state: ILoginState;
 
   constructor(props: any) {
     super(props);
+    console.log(this.props);
 
     this.state = {
       error: "",
@@ -33,14 +36,14 @@ class Login extends React.Component {
       redirect: false,
       submitting: false
     };
-    this.handleUsernameChange = this.handleUsernameChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.submitForm = this.submitForm.bind(this)
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   public render() {
     if (this.state.redirect) {
-      return <Redirect to='/' />
+      return <Redirect to="/" />;
     }
     return (
       <div>
@@ -81,20 +84,20 @@ class Login extends React.Component {
             />
           </label>
           <p className="error">{this.state.error}</p>
-          <input type="submit" value="Log In"/>
+          <input type="submit" value="Log In" />
         </form>
       </div>
     );
   }
 
-  public handleUsernameChange(event: any) {
+  public handleUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     this.setState({
       ...this.state,
       formData: { ...this.state.formData, username: value }
     });
   }
-  public handlePasswordChange(event: any) {
+  public handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     this.setState({
       ...this.state,
@@ -102,25 +105,17 @@ class Login extends React.Component {
     });
   }
 
-  public submitForm(event: any) {
-    event.preventDefault()
-    this.setState({ submitting: true })
-    axios
-      .post(REACT_APP_BACKEND_URL + "/login", this.state.formData)
-      .then((response) => {
-        const { data } = response;
-        window.sessionStorage.setItem("authToken", data.token);
-
-        const token = window.sessionStorage.getItem('authToken');
-        if (token) {
-          document.cookie = "jwt=" + token
-        }
-        this.setState({redirect: true})
-      })
-      .catch((error) => {
-        this.setState({ error: error.message, submitting: false });
-      });
-    
+  public async submitForm(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    this.setState({ submitting: true });
+    try {
+      const { data } = await axios.post(REACT_APP_BACKEND_URL + "/login", this.state.formData)
+      window.sessionStorage.setItem("authToken", data.token);
+      await this.props.fetchAuth();
+      this.setState({redirect: true})
+    } catch (e) {
+      this.setState({ error: e.message, submitting: false });
+    }
   }
 }
 

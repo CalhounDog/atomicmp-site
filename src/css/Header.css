@@ -47,6 +47,12 @@ a.nav-item, a.nav-item:visited {
   user-select: none;
 }
 
+.topnav button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .topnav a.discord-icon {
 	padding: 18.75px 16px;
 }

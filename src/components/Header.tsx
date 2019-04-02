@@ -5,7 +5,8 @@ import logo from "../images/amp-header-logo-low.png"
 import IUser from "../models/IUser";
 
 interface INavProps {
-  user: (IUser | undefined)
+  user: (IUser | undefined),
+  logout: () => void
 }
 
 interface INavState {
@@ -31,6 +32,7 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
     this.flipResponsiveMenu = this.flipResponsiveMenu.bind(this);
     this.renderUnauthenticatedHeaderLinks = this.renderUnauthenticatedHeaderLinks.bind(this);
     this.renderAuthenticatedHeaderLinks = this.renderAuthenticatedHeaderLinks.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
   public componentWillReceiveProps(nextProps: any) {
     console.log(nextProps)
@@ -97,11 +99,17 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         <Link className="nav-item" to={userURl}>
           {user.username}
         </Link>
-        <Link className="nav-item" to="/logout">
+        <button className="nav-item" onClick={this.handleLogoutClick}>
           Logout
-        </Link>
+        </button>
       </div>
-    )
+    );
+  }
+
+  private handleLogoutClick(e: React.MouseEvent) {
+    console.log("dab")
+    e.preventDefault();
+    this.props.logout();
   }
 
   private flipResponsiveMenu() {

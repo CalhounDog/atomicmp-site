@@ -12,14 +12,17 @@ interface IFormData {
   username: string;
 }
 
+interface IRegistrationProps {
+  fetchAuth: () => void;
+}
+
 interface IRegistrationState {
   error: string;
   formData: IFormData;
   submitting: boolean;
 }
 
-// tslint:disable: no-console
-class Register extends React.Component {
+class Register extends React.Component<IRegistrationProps, Partial<IRegistrationState>> {
   public state: IRegistrationState = {
     error: "",
     formData: {
@@ -33,6 +36,7 @@ class Register extends React.Component {
 
   constructor(props: any) {
     super(props);
+
     this.state = {
       error: "",
       formData: {
@@ -174,10 +178,7 @@ class Register extends React.Component {
     axios.post(REACT_APP_BACKEND_URL+"/register", this.state.formData).then(response => {
       const { data } = response;
       window.sessionStorage.setItem("authToken", data.token);
-      const token = window.sessionStorage.getItem('authToken');
-      if (token) {
-        document.cookie = "jwt=" + token
-      }
+      this.props.fetchAuth();
       document.location.href = "/"
     }).catch(error => {
       this.setState({ error: error.message })
