@@ -21,17 +21,17 @@ import Register from "./views/Register";
 // tslint:disable: jsx-no-lambda
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 
-class App extends React.Component {
+interface IAppState {
+  user: (IUser | undefined);
+}
 
-  public state: {
-    user: (IUser | undefined);
+class App extends React.Component {
+  public state: IAppState = {
+    user: undefined
   }
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      user: undefined
-    };
     this.fetchAuth = this.fetchAuth.bind(this);
     this.logout = this.logout.bind(this);
     this.fetchAuth();
@@ -91,7 +91,7 @@ class App extends React.Component {
     }
   }
 
-  public async logout() {
+  public logout() {
     window.sessionStorage.removeItem("authToken");
     this.setState({ user: undefined });
     document.location.href = "/";

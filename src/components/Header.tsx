@@ -11,7 +11,7 @@ interface INavProps {
 
 interface INavState {
   showResponsiveMenu: boolean;
-  user: any;
+  user: (IUser | undefined);
   isLoggedIn: boolean;
 }
 
@@ -19,23 +19,17 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
   public state = {
     isLoggedIn: false,
     showResponsiveMenu: false,
-    user: {},
+    user: undefined,
   };
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      isLoggedIn: false,
-      showResponsiveMenu: false,
-      user: {},
-    };
     this.flipResponsiveMenu = this.flipResponsiveMenu.bind(this);
     this.renderUnauthenticatedHeaderLinks = this.renderUnauthenticatedHeaderLinks.bind(this);
     this.renderAuthenticatedHeaderLinks = this.renderAuthenticatedHeaderLinks.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
   public componentWillReceiveProps(nextProps: any) {
-    console.log(nextProps)
     this.setState({
       isLoggedIn: (nextProps.user !== undefined),
         user: {...nextProps.user}
@@ -43,7 +37,6 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
   }
 
   public render() {
-    console.log(this.state)
     return (
       <nav
         className={
@@ -107,7 +100,6 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
   }
 
   private handleLogoutClick(e: React.MouseEvent) {
-    console.log("dab")
     e.preventDefault();
     this.props.logout();
   }

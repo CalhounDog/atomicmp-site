@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import { Redirect } from 'react-router-dom';
 import Container from "../components/Container";
 import "../css/Form.css";
 
@@ -19,10 +20,14 @@ interface IRegistrationProps {
 interface IRegistrationState {
   error: string;
   formData: IFormData;
+  redirect: boolean;
   submitting: boolean;
 }
 
-class Register extends React.Component<IRegistrationProps, Partial<IRegistrationState>> {
+class Register extends React.Component<
+  IRegistrationProps,
+  Partial<IRegistrationState>
+> {
   public state: IRegistrationState = {
     error: "",
     formData: {
@@ -31,22 +36,12 @@ class Register extends React.Component<IRegistrationProps, Partial<IRegistration
       password: "",
       username: ""
     },
+    redirect: false,
     submitting: false
   };
 
   constructor(props: any) {
     super(props);
-
-    this.state = {
-      error: "",
-      formData: {
-        confirmPassword: "",
-        key: "",
-        password: "",
-        username: ""
-      },
-      submitting: false
-    };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(
@@ -57,13 +52,15 @@ class Register extends React.Component<IRegistrationProps, Partial<IRegistration
   }
 
   public render() {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <Container>
           <h1>Join AMP</h1>
           {this.renderForm()}
         </Container>
-
       </div>
     );
   }
@@ -136,28 +133,30 @@ class Register extends React.Component<IRegistrationProps, Partial<IRegistration
     );
   }
 
-  public handleUsernameChange(event: any) {
+  public handleUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     this.setState({
       ...this.state,
       formData: { ...this.state.formData, username: value }
     });
   }
-  public handlePasswordChange(event: any) {
+  public handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     this.setState({
       ...this.state,
       formData: { ...this.state.formData, password: value }
     });
   }
-  public handleConfirmPasswordChange(event: any) {
+  public handleConfirmPasswordChange(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
     const value = event.target.value;
     this.setState({
       ...this.state,
       formData: { ...this.state.formData, confirmPassword: value }
     });
   }
-  public handleKeyChange(event: any) {
+  public handleKeyChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     this.setState({
       ...this.state,
@@ -165,26 +164,24 @@ class Register extends React.Component<IRegistrationProps, Partial<IRegistration
     });
   }
 
-  public submitForm(event: any) {
+  public async submitForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(this.state.formData);
     this.setState({ submitting: true });
 
     if (this.state.formData.password !== this.state.formData.confirmPassword) {
-      this.setState({error: "Passwords do not match :(", submitting: false})
+      this.setState({ error: "Passwords do not match :(", submitting: false });
       return;
     }
+    try {
+      const {data} = await axios.post(REACT_APP_BACKEND_URL + "/register", this.state.formData)
 
-    axios.post(REACT_APP_BACKEND_URL+"/register", this.state.formData).then(response => {
-      const { data } = response;
       window.sessionStorage.setItem("authToken", data.token);
-      this.props.fetchAuth();
-      document.location.href = "/"
-    }).catch(error => {
-      this.setState({ error: error.message })
-    }).then(() => {
-      this.setState({ submitting: false })
-    })
+      await this.props.fetchAuth();
+      this.setState({redirect: true});
+    }
+    catch(error) {
+      this.setState({ error: error.message, submitting: false });
+    }
   }
 }
 

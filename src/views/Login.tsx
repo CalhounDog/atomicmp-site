@@ -21,21 +21,19 @@ interface ILoginState {
 }
 
 class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
-  public state: ILoginState;
+  public state: ILoginState = {
+    error: "",
+    formData: {
+      password: "",
+      username: ""
+    },
+    redirect: false,
+    submitting: false
+  };
 
   constructor(props: any) {
     super(props);
-    console.log(this.props);
 
-    this.state = {
-      error: "",
-      formData: {
-        password: "",
-        username: ""
-      },
-      redirect: false,
-      submitting: false
-    };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
