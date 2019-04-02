@@ -1,5 +1,4 @@
 // tslint:disable no-console
-import axios from "axios";
 import * as React from "react";
 import {
   BrowserRouter as Router,
@@ -8,6 +7,8 @@ import {
   Switch
 } from "react-router-dom";
 import "./css/index.css";
+
+import backend from 'src/utils/network';
 
 import Header from "./components/Header"
 
@@ -19,7 +20,6 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 
 // tslint:disable: jsx-no-lambda
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 
 interface IAppState {
   user: (IUser | undefined);
@@ -71,13 +71,10 @@ class App extends React.Component {
   public async fetchAuth() {
     const token = window.sessionStorage.getItem('authToken');
     if (token) {
-      const instance = axios.create({
-        baseURL: REACT_APP_BACKEND_URL,
+      const response = await backend.get("/me", {
         headers: { Authorization: `Bearer ${token}` },
-        responseType: 'json',
         timeout: 5000
-      });
-      const response = await instance.get("/me")
+      })
       try {
         let user;
         if (response.data !== "") {

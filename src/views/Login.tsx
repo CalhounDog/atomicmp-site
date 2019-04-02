@@ -1,10 +1,8 @@
-import axios from "axios";
 import * as React from "react";
 import { Redirect } from 'react-router-dom';
+import backend from 'src/utils/network';
 import Container from "../components/Container"
 import "../css/Form.css";
-
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 
 interface ILoginProps {
   fetchAuth: () => void;
@@ -107,7 +105,7 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
     e.preventDefault();
     this.setState({ submitting: true });
     try {
-      const { data } = await axios.post(REACT_APP_BACKEND_URL + "/login", this.state.formData)
+      const { data } = await backend.post("/login", this.state.formData)
       window.sessionStorage.setItem("authToken", data.token);
       await this.props.fetchAuth();
       this.setState({redirect: true})

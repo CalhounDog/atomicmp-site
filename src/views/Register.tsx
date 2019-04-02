@@ -1,10 +1,8 @@
-import axios from "axios";
 import * as React from "react";
 import { Redirect } from 'react-router-dom';
+import backend from 'src/utils/network';
 import Container from "../components/Container";
 import "../css/Form.css";
-
-const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL || ""; 
 
 interface IFormData {
   confirmPassword: string;
@@ -173,7 +171,7 @@ class Register extends React.Component<
       return;
     }
     try {
-      const {data} = await axios.post(REACT_APP_BACKEND_URL + "/register", this.state.formData)
+      const {data} = await backend.post("/register", this.state.formData)
 
       window.sessionStorage.setItem("authToken", data.token);
       await this.props.fetchAuth();
