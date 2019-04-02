@@ -53,6 +53,7 @@ a.nav-item, a.nav-item:visited {
   background: none;
   border: none;
   cursor: pointer;
+	color: white;
 }
 
 .topnav a.discord-icon {
