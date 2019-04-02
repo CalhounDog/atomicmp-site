@@ -8,13 +8,13 @@ import {
 } from "react-router-dom";
 import "./css/index.css";
 
-import backend from 'src/utils/network';
+import backend from "./utils/network";
 
 import Header from "./components/Header"
 
 import IUser from "./models/IUser";
 
-import Faction from './views/Faction';
+import Faction from "./views/Faction";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
@@ -69,7 +69,7 @@ class App extends React.Component {
   }
 
   public async fetchAuth() {
-    const token = window.sessionStorage.getItem('authToken');
+    const token = window.sessionStorage.getItem("authToken");
     if (token) {
       const response = await backend.get("/me", {
         headers: { Authorization: `Bearer ${token}` },
