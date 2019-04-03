@@ -110,7 +110,9 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
       await this.props.fetchAuth();
       this.setState({redirect: true})
     } catch (error) {
-      this.setState({ error: error.message, submitting: false });
+      if (error.response.data) {
+        this.setState({ error: error.response.data.message, submitting: false });
+      }
     }
   }
 }

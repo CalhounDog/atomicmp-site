@@ -178,7 +178,9 @@ class Register extends React.Component<
       this.setState({redirect: true});
     }
     catch(error) {
-      this.setState({ error: error.message, submitting: false });
+      if (error.response.data) {
+        this.setState({ error: error.response.data.message, submitting: false });
+      }
     }
   }
 }
