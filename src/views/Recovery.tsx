@@ -64,6 +64,9 @@ class Recovery extends React.Component<IRecoveryProps, Partial<IRecoveryState>> 
             required={true}
           />
         </label>
+        <p className="input-description">
+          Password must be 8 or more characters.
+        </p>
         <label>
           Confirm Password:
             <input
