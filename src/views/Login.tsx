@@ -101,16 +101,16 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
     });
   }
 
-  public async submitForm(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  public async submitForm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     this.setState({ submitting: true });
     try {
       const { data } = await backend.post("/login", this.state.formData)
       window.sessionStorage.setItem("authToken", data.token);
       await this.props.fetchAuth();
       this.setState({redirect: true})
-    } catch (e) {
-      this.setState({ error: e.message, submitting: false });
+    } catch (error) {
+      this.setState({ error: error.message, submitting: false });
     }
   }
 }

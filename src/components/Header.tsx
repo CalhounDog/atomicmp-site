@@ -99,8 +99,8 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
     );
   }
 
-  private handleLogoutClick(e: React.MouseEvent) {
-    e.preventDefault();
+  private handleLogoutClick(event: React.MouseEvent) {
+    event.preventDefault();
     this.props.logout();
   }
 
