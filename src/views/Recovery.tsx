@@ -1,6 +1,6 @@
 import * as queryString from "query-string";
 import * as React from 'react';
-import Container from "src/components/Container";
+import Container from "../components/Container";
 import backend from "../utils/network";
 
 interface IRecoveryState {
@@ -109,7 +109,9 @@ class Recovery extends React.Component<any, Partial<IRecoveryState>> {
     try {
       await backend.post('/recovery', this.state.formData)
     } catch (error) {
-      this.setState({error: error.message, submitting: false})
+      if (error.response.data) {
+        this.setState({error: error.response.data.message, submitting: false})
+      }
     }
   }
 }
