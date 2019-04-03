@@ -1,6 +1,6 @@
 import * as queryString from "query-string";
 import * as React from 'react';
-import Container from "src/components/Container";
+import Container from "../components/Container";
 import backend from "../utils/network";
 
 interface IRecoveryState {
