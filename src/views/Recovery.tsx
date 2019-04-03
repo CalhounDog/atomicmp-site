@@ -1,23 +1,19 @@
+import * as queryString from "query-string";
 import * as React from 'react';
 import Container from "src/components/Container";
 import backend from "../utils/network";
-
-// tslint:disable-next-line: no-empty-interface
-interface IRecoveryProps {
-  
-}
 
 interface IRecoveryState {
   error: string;
   formData: {
     password: string;
     confirmPassword: string;
+    requestId: string;
   };
-  requestId: string;
   submitting: boolean;
 }
 
-class Recovery extends React.Component<IRecoveryProps, Partial<IRecoveryState>> {
+class Recovery extends React.Component<any, Partial<IRecoveryState>> {
   public state = {
     error: "",
     formData: {
@@ -25,7 +21,6 @@ class Recovery extends React.Component<IRecoveryProps, Partial<IRecoveryState>> 
       password: "",
       requestId: "",
     },
-    requestId: "",
     submitting: false,
   }
 
@@ -36,7 +31,11 @@ class Recovery extends React.Component<IRecoveryProps, Partial<IRecoveryState>> 
     this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(
       this
     );
-    backend.get('/recovery')
+
+    const parsed = queryString.parse(props.location.search);
+    const requestId = (parsed.id || "").toString();
+
+    this.state.formData.requestId = requestId;
   }
 
   public render() {
@@ -81,7 +80,6 @@ class Recovery extends React.Component<IRecoveryProps, Partial<IRecoveryState>> 
           />
         </label>
         <p className="error">{this.state.error}</p>
-        <input type="hidden" id="requestId" name="requestId" value={this.state.formData.requestId} />
         <input type="submit" value="Reset Password" />
       </form>
     )
@@ -107,6 +105,7 @@ class Recovery extends React.Component<IRecoveryProps, Partial<IRecoveryState>> 
   private async submitForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     this.setState({ submitting: true });
+
     try {
       await backend.post('/recovery', this.state.formData)
     } catch (error) {

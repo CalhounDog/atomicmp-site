@@ -17,6 +17,7 @@ import IUser from "./models/IUser";
 import Faction from "./views/Faction";
 import Home from "./views/Home";
 import Login from "./views/Login";
+import Recovery from "./views/Recovery";
 import Register from "./views/Register";
 
 // tslint:disable: jsx-no-lambda
@@ -60,6 +61,14 @@ class App extends React.Component {
               )}
             />
             <Route path="/faction" component={Faction} />
+            <Route
+              path="/recovery"
+              render={(routeProps) => (
+                <Recovery
+                  {...routeProps}
+                />
+              )}
+            />
             <Redirect from="*" to="/" />
           </Switch>
           <div id="background" />
