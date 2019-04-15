@@ -19,6 +19,7 @@ import Home from "./views/Home";
 import Login from "./views/Login";
 import Recovery from "./views/Recovery";
 import Register from "./views/Register";
+import User from './views/User';
 
 // tslint:disable: jsx-no-lambda
 
@@ -65,6 +66,14 @@ class App extends React.Component {
               path="/recovery"
               render={(routeProps) => (
                 <Recovery
+                  {...routeProps}
+                />
+              )}
+            />
+            <Route
+              path="/user"
+              render={(routeProps) => (
+                <User
                   {...routeProps}
                 />
               )}
