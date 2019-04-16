@@ -5,28 +5,52 @@ import IUser from '../models/IUser';
 import { playerCoordsToImg } from '../utils/helpers';
 import locations from "../utils/locations"
 
+const STARTING_COORDS = {
+  x: 69449.953125,
+  y: -26285.0,
+  z: -5968.092285,
+};
+
 interface IMapProps {
   user: IUser;
 }
 
 interface IMapState {
-  mode: string
+  mapTheme: string;
+  playerLocation?: {
+    x: number;
+    y: number;
+  }
+}
+
+interface IFactionMemberPositionData {
+  id: string;
+  username: string;
+  x_pos: number;
+  y_pos: number;
+  rotation: number;
 }
 
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
-    mode: "default", 
+    mapTheme: "default",
+    playerLocation: {
+      x: STARTING_COORDS.x,
+      y: STARTING_COORDS.y
+    }
   }
   constructor(props: IMapProps) {
     super(props);
     this.getMapStyle = this.getMapStyle.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderPlayer = this.renderPlayer.bind(this);
+    this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
   }
 
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
+    this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
   }
   public componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyPress, false);
@@ -70,12 +94,11 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
 
   public renderPlayer() {
-    if (this.props.user.x_pos && this.props.user.y_pos) {
-      const userLocation: { x: number; y: number; } = playerCoordsToImg(this.props.user);
+    if (this.state.playerLocation) {
       return (
         <g>
           <title>{this.props.user.username}</title>
-          <circle cx={userLocation.x} cy={userLocation.y} stroke="black" strokeWidth={2} fill="green" r={5} />
+          <circle cx={this.state.playerLocation.x} cy={this.state.playerLocation.y} stroke="black" strokeWidth={2} fill="green" r={5} />
         </g>
       )
     } 
@@ -85,23 +108,23 @@ class Map extends React.Component<IMapProps, IMapState> {
   public handleKeyPress(event: KeyboardEvent) {
     switch(event.keyCode) {
       case(49): {
-        this.setState({mode: "realistic"});
+        this.setState({mapTheme: "realistic"});
         break;
       }
       case(50): {
-        this.setState({mode: "green"});
+        this.setState({mapTheme: "green"});
         break;
       }
       case(51): {
-        this.setState({mode: "amber"});
+        this.setState({mapTheme: "amber"});
         break;
       }
       case(52): {
-        this.setState({mode: "blue"});
+        this.setState({mapTheme: "blue"});
         break;
       }
       case(53): {
-        this.setState({mode: "white"});
+        this.setState({mapTheme: "white"});
         break;
       }
     }
@@ -114,7 +137,7 @@ class Map extends React.Component<IMapProps, IMapState> {
       green:"#1aff80",
       white:"#c0ffff",
     }
-    return themes[this.state.mode]
+    return themes[this.state.mapTheme]
   }
 
 }
