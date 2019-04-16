@@ -2,6 +2,7 @@ import * as React from "react";
 import MapLocation from '../components/MapLocation';
 import mapBackground from "../images/map.png";
 import IUser from '../models/IUser';
+import { playerCoordsToImg } from '../utils/helpers';
 import locations from "../utils/locations"
 
 interface IMapProps {
@@ -21,6 +22,7 @@ class Map extends React.Component<IMapProps, IMapState> {
     super(props);
     this.getMapStyle = this.getMapStyle.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.renderPlayer = this.renderPlayer.bind(this);
   }
 
   public componentDidMount() {
@@ -49,8 +51,14 @@ class Map extends React.Component<IMapProps, IMapState> {
             filter: "gray",
             opacity: .80,
           } : {})}>
-
-          {this.renderLocationIcons()}
+          <svg xmlns="http://www.w3.org/2000/svg"
+            width="100%" height="100%"
+            viewBox="0 0 2048 2048"
+            id="map-svg"
+          >
+            {this.renderLocationIcons()}
+            {this.renderPlayer()}
+          </svg>
         </div>
 
       </div>
@@ -58,15 +66,20 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
 
   public renderLocationIcons() {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg"
-        width="100%" height="100%"
-        viewBox="0 0 2048 2048"
-        id="map-svg"
-        >
-        {locations.map(locationData => <MapLocation id={locationData.id} icon={locationData.icon} key={locationData.id} x={locationData.x} y={locationData.y}/>)}
-      </svg>
-    )
+    return locations.map(locationData => <MapLocation id={locationData.id} icon={locationData.icon} key={locationData.id} x={locationData.x} y={locationData.y}/>)
+  }
+
+  public renderPlayer() {
+    if (this.props.user.x_pos && this.props.user.y_pos) {
+      const userLocation: { x: number; y: number; } = playerCoordsToImg(this.props.user);
+      return (
+        <g>
+          <title>{this.props.user.username}</title>
+          <circle cx={userLocation.x} cy={userLocation.y} stroke="black" strokeWidth={2} fill="green" r={5} />
+        </g>
+      )
+    } 
+    return;
   }
 
   public handleKeyPress(event: KeyboardEvent) {
