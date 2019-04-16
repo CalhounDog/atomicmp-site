@@ -41,9 +41,9 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
   public render() {
     const iconDimension = 40;
     return (
-      <image id={this.props.id}
-        fill={this.state.hover ? "black" : "none"}
-        fillOpacity={this.state.hover ? 0.3 : 0}
+      <g>
+        <title>{this.props.id}</title>
+        <image id={this.props.id}
         style={{
           WebkitFilter: "none",
           boxShadow: "1px 1px black",
@@ -51,15 +51,15 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
         }}
         stroke="#1aff80"
         strokeWidth="2"
-        width={iconDimension+"px"}
-        height={iconDimension+"px"}
+        width={iconDimension + "px"}
+        height={iconDimension + "px"}
         x={this.props.x - iconDimension / 2}
         y={this.props.y - iconDimension / 2}
         onMouseEnter={this.handleOnMouseEnter}
         onMouseLeave={this.handleOnMouseLeave}
-        xlinkTitle={this.props.id}
         xlinkHref={this.props.icon}
-        />
+      />
+      </g>
     )
   }
   public handleOnMouseEnter() {
@@ -174,13 +174,13 @@ class Map extends React.Component<IMapProps, IMapState> {
       },
       {
         icon: blockade,
-        id: "Raider Camp 1",
+        id: "Raider Encampment",
         x: 1051,
         y: 487,
       },
       {
         icon: cityRuins,
-        id: "Raider Camp 2",
+        id: "Fireside Arena",
         x: 820,
         y: 1050,
       },
