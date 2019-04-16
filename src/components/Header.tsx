@@ -92,6 +92,9 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         <Link className="nav-item" to={userURl}>
           {user.username}
         </Link>
+        <Link className="nav-item" to="/map">
+          Map
+        </Link>
         <button className="nav-item" onClick={this.handleLogoutClick}>
           Logout
         </button>

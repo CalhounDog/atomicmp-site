@@ -10,13 +10,15 @@ import "./css/index.css";
 
 import backend from "./utils/network";
 
-import Header from "./components/Header"
+import Header from "./components/Header";
+import Spinner from "./components/Spinner";
 
 import IUser from "./models/IUser";
 
 import Faction from "./views/Faction";
 import Home from "./views/Home";
 import Login from "./views/Login";
+import Map from './views/Map';
 import Recovery from "./views/Recovery";
 import Register from "./views/Register";
 import User from './views/User';
@@ -24,22 +26,32 @@ import User from './views/User';
 // tslint:disable: jsx-no-lambda
 
 interface IAppState {
-  user: (IUser | undefined);
+  user?: IUser;
+  loading: boolean;
 }
 
 class App extends React.Component {
   public state: IAppState = {
-    user: undefined
+    loading: true,
+    user: undefined,
   }
 
   constructor(props: any) {
     super(props);
     this.fetchAuth = this.fetchAuth.bind(this);
     this.logout = this.logout.bind(this);
-    this.fetchAuth();
+    this.fetchAuth().then(() => {
+      this.setState({loading: false});
+      this.forceUpdate();
+    });
   }
 
   public render() {
+    if (this.state.loading) {
+      return Spinner()
+    }
+
+
     return (
       <Router>
         <div>
@@ -77,6 +89,17 @@ class App extends React.Component {
                   {...routeProps}
                 />
               )}
+            />
+            <Route
+              path="/map"
+              render={(routeProps) => {
+                if (!this.state.user) {
+                  return <Redirect to="/"/>
+                }
+                return <Map user={this.state.user}
+                  {...routeProps}
+                />
+              }}
             />
             <Redirect from="*" to="/" />
           </Switch>

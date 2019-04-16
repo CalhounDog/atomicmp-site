@@ -1,0 +1,228 @@
+import * as React from "react";
+import IUser from 'src/models/IUser';
+import {
+  blockade,
+  cityRuins,
+  clover,
+  farm,
+  junkCity,
+  militaryCheckpoint,
+  radioStation,
+  redRocket,
+  smallHouse,
+  tentCity,
+  town,
+} from "../images/map-markers"
+import mapBackground from "../images/map.png";
+
+interface IMapLocationProps {
+  id: string;
+  icon: string;
+  x: number;
+  y: number;
+}
+
+interface IMapLocationState {
+  hover: boolean;
+}
+
+class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocationState>> {
+  public state = {
+    hover: false
+  }
+
+  constructor(props: IMapLocationProps) {
+    super(props);
+    this.handleOnMouseEnter = this.handleOnMouseEnter.bind(this)
+    this.handleOnMouseLeave = this.handleOnMouseLeave.bind(this)
+  }
+
+  public render() {
+    const iconDimension = 40;
+    return (
+      <image id={this.props.id}
+        fill={this.state.hover ? "black" : "none"}
+        fillOpacity={this.state.hover ? 0.3 : 0}
+        style={{
+          WebkitFilter: "none",
+          boxShadow: "1px 1px black",
+          opacity: 1,
+        }}
+        stroke="#1aff80"
+        strokeWidth="2"
+        width={iconDimension+"px"}
+        height={iconDimension+"px"}
+        x={this.props.x - iconDimension / 2}
+        y={this.props.y - iconDimension / 2}
+        onMouseEnter={this.handleOnMouseEnter}
+        onMouseLeave={this.handleOnMouseLeave}
+        xlinkHref={this.props.icon}
+        />
+    )
+  }
+  public handleOnMouseEnter() {
+    this.setState({hover: true})
+  }
+  public handleOnMouseLeave() {
+    this.setState({hover: false})
+  }
+}
+
+interface IMapProps {
+  user: IUser;
+}
+
+interface IMapState {
+  mode: string
+}
+
+// tslint:disable: max-classes-per-file
+class Map extends React.Component<IMapProps, IMapState> {
+  public state = {
+    mode: "realistic", 
+  }
+  constructor(props: IMapProps) {
+    super(props);
+    this.getMapStyle = this.getMapStyle.bind(this);
+  }
+
+  public render() {
+    const mapBackgroundColor = this.getMapStyle();
+    return (
+      <div style={{
+        backgroundColor: mapBackgroundColor,
+        width: "100%",
+      }}>
+        <div style={Object.assign({
+          backgroundColor: "black",
+          backgroundImage: "url(" + mapBackground + ")",
+          backgroundSize: "100%",
+          height:"100%",
+          opacity: 1,
+          width: "100%",
+
+        }, (mapBackgroundColor) ? {
+            WebkitFilter: "grayscale(1) brightness(0.8) contrast(1.8)",
+            filter: "gray",
+            opacity: .80,
+          } : {})}>
+
+          {this.loadLocationIcons()}
+        </div>
+
+      </div>
+    );
+  }
+
+  public loadLocationIcons() {
+    const data = [
+      {
+        icon: clover,
+        id: "Bar",
+        x: 1575,
+        y: 1160,
+      },
+      {
+        icon: militaryCheckpoint,
+        id: "Bunker",
+        x: 1163,
+        y: 458,
+      },
+      {
+        icon: smallHouse,
+        id: "Diner",
+        x: 1540,
+        y: 655,
+      },
+      {
+        icon: farm,
+        id: "Farm",
+        x: 224,
+        y: 1799,
+      },
+      {
+        icon: smallHouse,
+        id: "Hotel",
+        x: 1620,
+        y: 1150,
+      },
+      {
+        icon: tentCity,
+        id: "NCR Encampment",
+        x: 542,
+        y: 282,
+      },
+      {
+        icon: radioStation,
+        id: "Satellite Station",
+        x: 1877,
+        y: 1431,
+      },
+      {
+        icon: redRocket,
+        id: "Red Rocket",
+        x: 1370,
+        y: 605,
+      },
+      {
+        icon: blockade,
+        id: "Raider Camp 1",
+        x: 1051,
+        y: 487,
+      },
+      {
+        icon: cityRuins,
+        id: "Raider Camp 2",
+        x: 820,
+        y: 1050,
+      },
+      {
+        icon: farm,
+        id: "Ramsey Ranch",
+        x: 313,
+        y: 505,
+      },
+      {
+        icon: junkCity,
+        id: "Spawn Town",
+        x: 1720,
+        y: 720,
+      },
+      {
+        icon: farm,
+        id: "Stables",
+        x: 416,
+        y: 1028,
+      },
+      {
+        icon: town,
+        id: "Town 1",
+        x: 429,
+        y: 970,
+      },
+
+    ]
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg"
+        width="100%" height="100%"
+        viewBox="0 0 2048 2048"
+        id="map-svg"
+        >
+        {data.map(locationData => <MapLocation id={locationData.id} icon={locationData.icon} key={locationData.id} x={locationData.x} y={locationData.y}/>)}
+      </svg>
+    )
+  }
+
+  private getMapStyle(): (string | undefined) {
+    const themes = {
+      amber:"#2ecfff",
+      blue:"#ffb642",
+      green:"#1aff80",
+      white:"#c0ffff",
+    }
+    return themes[this.state.mode]
+  }
+
+}
+
+export default Map;
