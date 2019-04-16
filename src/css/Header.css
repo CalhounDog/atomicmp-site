@@ -1,3 +1,7 @@
+* {
+	--link: url(../images/cursors/FNVLinkSelect.png), auto;
+}
+
 
 .topnav {
   overflow: hidden;
@@ -12,6 +16,11 @@
   text-align: center;
   padding: 0 16px;
   text-decoration: none;
+  cursor: var(--link);
+}
+
+.nav-logo img {
+  cursor: var(--link);
 }
 
 .nav-item {
@@ -31,6 +40,7 @@
 
 a.nav-item, a.nav-item:visited {
 	color: white;
+  cursor: var(--link);
 }
 
 .nav-item:hover {
@@ -52,8 +62,13 @@ a.nav-item, a.nav-item:visited {
 .topnav button {
   background: none;
   border: none;
-  cursor: pointer;
-	color: white;
+  color: white;
+  cursor: var(--link);
+}
+
+
+a span {
+  cursor: var(--link);
 }
 
 .topnav a.discord-icon {
@@ -78,7 +93,6 @@ a.nav-item, a.nav-item:visited {
     right: 0;
     top: 0;
   }
-  
 
   .topnav.responsive {
     height: initial;

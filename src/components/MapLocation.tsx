@@ -20,6 +20,7 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
     super(props);
     this.handleOnMouseEnter = this.handleOnMouseEnter.bind(this)
     this.handleOnMouseLeave = this.handleOnMouseLeave.bind(this)
+    this.handleDragStart = this.handleDragStart.bind(this)
   }
 
   public render() {
@@ -33,6 +34,7 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
             boxShadow: "1px 1px black",
             opacity: 1,
           }}
+          onDragStart={this.handleDragStart}
           stroke="#1aff80"
           strokeWidth="2"
           width={iconDimension + "px"}
@@ -51,6 +53,9 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
   }
   public handleOnMouseLeave() {
     this.setState({ hover: false })
+  }
+  public handleDragStart(event: any) {
+    event.preventDefault();
   }
 }
 

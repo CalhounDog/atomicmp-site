@@ -28,6 +28,7 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
     this.renderUnauthenticatedHeaderLinks = this.renderUnauthenticatedHeaderLinks.bind(this);
     this.renderAuthenticatedHeaderLinks = this.renderAuthenticatedHeaderLinks.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
   }
   public componentWillReceiveProps(nextProps: any) {
     this.setState({
@@ -44,8 +45,8 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         }
         id="topnav"
       >
-        <Link className="nav-logo" to="/">
-          <img src={logo} style={{ width: "300px", height: "58px" }} />
+        <Link onDragStart={this.handleDragStart} className="nav-logo" to="/">
+          <img onDragStart={this.handleDragStart} src={logo} style={{ width: "300px", height: "58px" }} />
         </Link>
         <a
           className="nav-item discord-icon"
@@ -109,6 +110,10 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
 
   private flipResponsiveMenu() {
     this.setState({ showResponsiveMenu: !this.state.showResponsiveMenu });
+  }
+  
+  private handleDragStart(event: any) {
+    event.preventDefault();
   }
 }
 

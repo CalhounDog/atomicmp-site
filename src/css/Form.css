@@ -1,3 +1,8 @@
+* {
+	--input: url(../images/cursors/FNVTextSelect.png), auto;
+	--link: url(../images/cursors/FNVLinkSelect.png), auto;
+}
+
 form {
 	margin: 20px 0;
 }
@@ -8,7 +13,8 @@ form input{
 	clear:both;
 	padding:3px;
   color: var(--header-accent);
-  background: white;
+	background: white;
+	cursor: var(--input);
 }
 
 form input[type="submit"] {
@@ -23,6 +29,7 @@ form input[type="submit"] {
 	border-radius: 5px;
 	padding: 5px 10px;
 	margin-top: 12px;
+	cursor: var(--link);
 }
 
 form input[type="submit"]:hover {

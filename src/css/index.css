@@ -1,6 +1,6 @@
 @font-face {
 	font-family: "Overseer";
-	src: url(/Overseer.otf) format("truetype");
+	src: url(../fonts/Overseer.otf) format("truetype");
 }
 
 * {
@@ -11,6 +11,9 @@
 	--header-accent:    #293744;
 	--body-main:		#f9ab57;
 	--body-accent:		#f9f9d2;
+	--pointer: url(../images/cursors/FNVSelect.png), auto;
+	--link: url(../images/cursors/FNVLinkSelect.png), auto;
+	cursor: var(--pointer)
 }
 
 
@@ -39,6 +42,7 @@ h1 {
 a, a:visited {
 	color: inherit;
 	text-decoration: none;
+	cursor: var(--pointer)
 }
 
 #background {
@@ -94,4 +98,8 @@ p {
 	font-size: 10px;
 	margin:0;
 	padding:0;
+}
+
+a.discord-icon, a.discord-icon * {
+	cursor: var(--link);
 }
