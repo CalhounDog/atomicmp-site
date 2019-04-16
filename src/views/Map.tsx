@@ -8,6 +8,7 @@ import {
   junkCity,
   militaryCheckpoint,
   radioStation,
+  railroadCrossing,
   redRocket,
   smallHouse,
   tentCity,
@@ -56,6 +57,7 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
         y={this.props.y - iconDimension / 2}
         onMouseEnter={this.handleOnMouseEnter}
         onMouseLeave={this.handleOnMouseLeave}
+        xlinkTitle={this.props.id}
         xlinkHref={this.props.icon}
         />
     )
@@ -79,7 +81,7 @@ interface IMapState {
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
-    mode: "realistic", 
+    mode: "default", 
   }
   constructor(props: IMapProps) {
     super(props);
@@ -102,7 +104,7 @@ class Map extends React.Component<IMapProps, IMapState> {
           width: "100%",
 
         }, (mapBackgroundColor) ? {
-            WebkitFilter: "grayscale(1) brightness(0.8) contrast(1.8)",
+            WebkitFilter: "grayscale(1) brightness(0.75) contrast(1.75)",
             filter: "gray",
             opacity: .80,
           } : {})}>
@@ -118,13 +120,13 @@ class Map extends React.Component<IMapProps, IMapState> {
     const data = [
       {
         icon: clover,
-        id: "Bar",
-        x: 1575,
+        id: "Ways Bar",
+        x: 1570,
         y: 1160,
       },
       {
         icon: militaryCheckpoint,
-        id: "Bunker",
+        id: "Military Checkpoint",
         x: 1163,
         y: 458,
       },
@@ -136,15 +138,15 @@ class Map extends React.Component<IMapProps, IMapState> {
       },
       {
         icon: farm,
-        id: "Farm",
+        id: "Tumbleweed Fields",
         x: 224,
         y: 1799,
       },
       {
         icon: smallHouse,
-        id: "Hotel",
+        id: "The Oasis Motel",
         x: 1620,
-        y: 1150,
+        y: 1145,
       },
       {
         icon: tentCity,
@@ -153,10 +155,16 @@ class Map extends React.Component<IMapProps, IMapState> {
         y: 282,
       },
       {
+        icon: railroadCrossing,
+        id: "The Tracks",
+        x: 505,
+        y: 820,
+      },
+      {
         icon: radioStation,
-        id: "Satellite Station",
-        x: 1877,
-        y: 1431,
+        id: "Military Broadcast Station",
+        x: 1890,
+        y: 1450,
       },
       {
         icon: redRocket,
@@ -192,13 +200,13 @@ class Map extends React.Component<IMapProps, IMapState> {
         icon: farm,
         id: "Stables",
         x: 416,
-        y: 1028,
+        y: 1040,
       },
       {
         icon: town,
-        id: "Town 1",
-        x: 429,
-        y: 970,
+        id: "Tri-Rail",
+        x: 420,
+        y: 965,
       },
 
     ]
