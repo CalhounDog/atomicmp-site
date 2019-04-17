@@ -1,4 +1,11 @@
+import { CRS, LatLngBounds } from 'leaflet';
 import * as React from "react";
+import {
+  ImageOverlay,
+  Map as LeafletMap,
+  Marker,
+  Popup,
+} from "react-leaflet";
 import backend from 'src/utils/network';
 import MapLocation from '../components/MapLocation';
 import PlayerArrow from "../components/MapPlayer";
@@ -6,8 +13,7 @@ import "../css/Map.css";
 import mapBackground from "../images/map.png";
 import IUser from '../models/IUser';
 import { playerCoordsToImg } from '../utils/helpers';
-import locations from "../utils/locations"
-
+import locations from "../utils/locations";
 
 const STARTING_COORDS = {
   x: 69449.953125,
@@ -33,16 +39,19 @@ interface IMapState {
     y: number;
     rotation?: number;
   },
+  zoom: number;
   factionMembersData: IFactionMemberPositionData[]
 }
-
 
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
     factionMembersData: [],
     mapTheme: "map-theme-realistic",
+    maxZoom: 4,
+    minZoom: -2,
     playerLocation: STARTING_COORDS,
+    zoom: -1,
   }
   constructor(props: IMapProps) {
     super(props);
@@ -62,26 +71,42 @@ class Map extends React.Component<IMapProps, IMapState> {
     document.removeEventListener("keydown", this.handleKeyPress, false);
   }
   public render() {
+
+    const w = 2048;
+    const h = 2048;
+
+    const southWest: [number, number] = [0, 0];
+    const northEast: [number, number] = [w, h];
+    const bounds = new LatLngBounds(southWest, northEast);
+    const position: [number, number] = [this.state.playerLocation.x, this.state.playerLocation.y];
     return (
-      <div id="map-container" className={this.state.mapTheme}>
-        <img src={mapBackground} style={{
-          width:"100%",
-        }}/>
-        <svg xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 2048 2048"
-          id="map-svg"
-          style={{
-            left: 0,
-            position: "absolute",
-            top: "68px",
-            width: "100%",
-            zIndex: 1,
-          }}
-        >
-          {this.renderLocationIcons()}
-          {this.renderPlayer()}
-        </svg>
-      </div>
+      <LeafletMap
+        style={{
+          bottom: "0px",
+          position:"absolute",
+          top: "68px",
+          width: "100%",
+        }}
+        center={position}
+        zoom={this.state.zoom}
+        minZoom={this.state.minZoom}
+        maxZoom={this.state.maxZoom}
+        zoomDelta={0.25}
+        zoomSnap={0.25}
+        maxBound={bounds}
+        continuousWorld={false}
+        crs={CRS.Simple}
+      >
+        <ImageOverlay
+          url={mapBackground}
+          bounds={bounds}
+        />
+        <Marker position={[this.state.playerLocation.y, this.state.playerLocation.x]}>
+            <Popup>
+              <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
+            </Popup>
+          </Marker>
+      </LeafletMap>
     );
   }
 
