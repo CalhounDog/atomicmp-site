@@ -1,15 +1,26 @@
 import * as React from "react";
+import backend from 'src/utils/network';
 import MapLocation from '../components/MapLocation';
+import PlayerArrow from "../components/MapPlayer";
+import "../css/Map.css";
 import mapBackground from "../images/map.png";
 import IUser from '../models/IUser';
 import { playerCoordsToImg } from '../utils/helpers';
 import locations from "../utils/locations"
 
+
 const STARTING_COORDS = {
   x: 69449.953125,
   y: -26285.0,
-  z: -5968.092285,
 };
+
+interface IFactionMemberPositionData {
+  id: string;
+  username: string;
+  x_pos: number;
+  y_pos: number;
+  rotation: number;
+}
 
 interface IMapProps {
   user: IUser;
@@ -20,29 +31,21 @@ interface IMapState {
   playerLocation?: {
     x: number;
     y: number;
-  }
+    rotation?: number;
+  },
+  factionMembersData: IFactionMemberPositionData[]
 }
 
-interface IFactionMemberPositionData {
-  id: string;
-  username: string;
-  x_pos: number;
-  y_pos: number;
-  rotation: number;
-}
 
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
-    mapTheme: "default",
-    playerLocation: {
-      x: STARTING_COORDS.x,
-      y: STARTING_COORDS.y
-    }
+    factionMembersData: [],
+    mapTheme: "map-theme-realistic",
+    playerLocation: STARTING_COORDS,
   }
   constructor(props: IMapProps) {
     super(props);
-    this.getMapStyle = this.getMapStyle.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderPlayer = this.renderPlayer.bind(this);
     this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
@@ -50,41 +53,34 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
+    this.fetchFactionMembers().then(factionMembersData => {
+      this.setState(state => ({ ...state, factionMembersData }))
+    }).catch(console.error)
     this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
   }
   public componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyPress, false);
   }
   public render() {
-    const mapBackgroundColor = this.getMapStyle();
     return (
-      <div style={{
-        backgroundColor: mapBackgroundColor,
-        width: "100%",
-      }}>
-        <div style={Object.assign({
-          backgroundColor: "black",
-          backgroundImage: "url(" + mapBackground + ")",
-          backgroundSize: "100%",
-          height:"100%",
-          opacity: 1,
-          width: "100%",
-
-        }, (mapBackgroundColor) ? {
-            WebkitFilter: "grayscale(1) brightness(0.75) contrast(1.75)",
-            filter: "gray",
-            opacity: .80,
-          } : {})}>
-          <svg xmlns="http://www.w3.org/2000/svg"
-            width="100%" height="100%"
-            viewBox="0 0 2048 2048"
-            id="map-svg"
-          >
-            {this.renderLocationIcons()}
-            {this.renderPlayer()}
-          </svg>
-        </div>
-
+      <div id="map-container" className={this.state.mapTheme}>
+        <img src={mapBackground} style={{
+          width:"100%",
+        }}/>
+        <svg xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          id="map-svg"
+          style={{
+            left: 0,
+            position: "absolute",
+            top: "68px",
+            width: "100%",
+            zIndex: 1,
+          }}
+        >
+          {this.renderLocationIcons()}
+          {this.renderPlayer()}
+        </svg>
       </div>
     );
   }
@@ -98,7 +94,7 @@ class Map extends React.Component<IMapProps, IMapState> {
       return (
         <g>
           <title>{this.props.user.username}</title>
-          <circle cx={this.state.playerLocation.x} cy={this.state.playerLocation.y} stroke="black" strokeWidth={2} fill="green" r={5} />
+          <PlayerArrow x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />
         </g>
       )
     } 
@@ -108,38 +104,32 @@ class Map extends React.Component<IMapProps, IMapState> {
   public handleKeyPress(event: KeyboardEvent) {
     switch(event.keyCode) {
       case(49): {
-        this.setState({mapTheme: "realistic"});
+        this.setState({mapTheme: "map-theme-realistic"});
         break;
       }
       case(50): {
-        this.setState({mapTheme: "green"});
+        this.setState({mapTheme: "map-theme-green"});
         break;
       }
       case(51): {
-        this.setState({mapTheme: "amber"});
+        this.setState({mapTheme: "map-theme-amber"});
         break;
       }
       case(52): {
-        this.setState({mapTheme: "blue"});
+        this.setState({mapTheme: "map-theme-blue"});
         break;
       }
       case(53): {
-        this.setState({mapTheme: "white"});
+        this.setState({mapTheme: "map-theme-white"});
         break;
       }
     }
   }
 
-  private getMapStyle(): (string | undefined) {
-    const themes = {
-      amber:"#2ecfff",
-      blue:"#ffb642",
-      green:"#1aff80",
-      white:"#c0ffff",
-    }
-    return themes[this.state.mapTheme]
+  private async fetchFactionMembers(): Promise<IFactionMemberPositionData[]> {
+    const { data } = await backend.get('api/faction')
+    return [...data];
   }
-
 }
 
 export default Map;

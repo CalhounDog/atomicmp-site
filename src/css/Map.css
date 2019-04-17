@@ -1,0 +1,53 @@
+.main:hover::before {
+  content: "";
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position:absolute;
+  background-color:blue;
+  transition: 0.5s;
+  filter: brightness(50%);
+}
+
+#map-container {
+  width: 100%;
+}
+
+#map-container::before {
+  content: "";
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  filter: brightness(50%);
+}
+
+#map-container img {
+  background-color: black;
+  background-size:  100%;
+  height: 100%;
+  opacity: 0.8;
+  width:  100%;
+}
+#map-container.map-theme-realistic img {
+  opacity: 1;
+}
+
+.map-theme-white {
+  background-color: #c0ffff;
+}
+.map-theme-green {
+  background-color: #1aff80;
+}
+.map-theme-amber {
+  background-color: #2ecfff;
+}
+.map-theme-blue {
+  background-color: #ffb642;
+}
+.map-theme-white img, .map-theme-green img, .map-theme-amber img, .map-theme-blue img {
+  -webkit-filter: grayscale(1) brightness(0.75) contrast(1.75);
+  filter: gray;
+  opacity: .80;
+}
