@@ -23,7 +23,7 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
   }
 
   public render() {
-    const iconDimension = 40;
+    const iconDimension = 20;
 
     const locationIcon: Icon = new L.Icon({
       iconAnchor: undefined,
@@ -37,13 +37,12 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
     });
 
     const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y})
-
     return (
 
       <Marker position={location} icon={locationIcon}>
         <Popup>
-          <span>{this.props.id}</span>
-        </Popup><title>{this.props.id}</title>
+          {this.props.id}
+        </Popup>
       </Marker>
     )
   }

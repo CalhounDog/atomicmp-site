@@ -1,4 +1,4 @@
-import { LatLng } from 'leaflet';
+import { CRS, LatLng, Point } from 'leaflet';
 
 // 100,000 -> 2048
 // -100,000 -> 0
@@ -23,9 +23,7 @@ function playerCoordsToImg({ x_pos, y_pos }: IPlayerCoords): {x: number, y: numb
  * @param param0 
  */
 function mapImagePointToLatLng({x, y}: {x: number, y: number}): LatLng {
-  const newLat = ((y - 1024) * -1) + 1024
-
-  return new LatLng(newLat, x);
+  return CRS.Simple.unproject(new Point(x, -(y - 2048)))
 }
 
 export {

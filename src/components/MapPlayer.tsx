@@ -11,7 +11,7 @@ class MapPlayer extends React.Component<any, any> {
   }
 
   public render() {
-    const iconDimension = 40;
+    const iconDimension = 20;
 
     const locationIcon: Icon = new L.Icon({
       iconAnchor: undefined,
