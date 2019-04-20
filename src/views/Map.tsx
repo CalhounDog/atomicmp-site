@@ -4,15 +4,15 @@ import {
   ImageOverlay,
   Map as LeafletMap,
 } from "react-leaflet";
-import { mapImagePointToLatLng } from 'src/utils/helpers';
-import backend from 'src/utils/network';
 import MapLocation from '../components/MapLocation';
 import PlayerArrow from "../components/MapPlayer";
 import "../css/Map.css";
 import mapBackground from "../images/map.png";
 import IUser from '../models/IUser';
+import { mapImagePointToLatLng } from '../utils/helpers';
 import { playerCoordsToImg } from '../utils/helpers';
 import locations from "../utils/locations";
+import backend from '../utils/network';
 
 const STARTING_COORDS = {
   x: 69449.953125,

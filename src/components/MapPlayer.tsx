@@ -2,9 +2,9 @@ import * as L from 'leaflet';
 import { Icon } from 'leaflet';
 import * as React from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import { mapImagePointToLatLng } from 'src/utils/helpers';
 import { playerArrow } from "../images/map-markers";
 import IUser from '../models/IUser';
+import { mapImagePointToLatLng } from '../utils/helpers';
 
 interface IMapPlayerProps {
   user: IUser;

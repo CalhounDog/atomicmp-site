@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import { Icon } from 'leaflet';
 import * as React from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import { mapImagePointToLatLng } from 'src/utils/helpers';
+import { mapImagePointToLatLng } from '../utils/helpers';
 
 interface IMapLocationProps {
   id: string;
