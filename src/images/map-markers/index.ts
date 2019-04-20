@@ -13,6 +13,7 @@ import town from "./icon_212.svg"
 import tentCity from "./icon_38.svg"
 import railroadCrossing from "./icon_56.svg"
 import radioStation from "./icon_62.svg"
+import playerArrow from "./icon_94.svg"
 import house from "./icon_99.svg"
 
 export {
@@ -32,4 +33,5 @@ export {
   hospital,
   cityRuins,
   redRocket,
+  playerArrow,
 }

@@ -11,6 +11,10 @@
     "no-console": [
       true,
       "warning"
+    ],
+    "ordered-imports": [
+      true,
+      "warning"
     ]
   }
 }

@@ -1,4 +1,8 @@
+import * as L from 'leaflet';
+import { Icon } from 'leaflet';
 import * as React from 'react';
+import { Marker, Popup } from 'react-leaflet';
+import { mapImagePointToLatLng } from '../utils/helpers';
 
 interface IMapLocationProps {
   id: string;
@@ -7,55 +11,35 @@ interface IMapLocationProps {
   y: number;
 }
 
+// tslint:disable-next-line: no-empty-interface
 interface IMapLocationState {
-  hover: boolean;
 }
 
 class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocationState>> {
-  public state = {
-    hover: false
-  }
+  public state = {}
 
   constructor(props: IMapLocationProps) {
     super(props);
-    this.handleOnMouseEnter = this.handleOnMouseEnter.bind(this)
-    this.handleOnMouseLeave = this.handleOnMouseLeave.bind(this)
-    this.handleDragStart = this.handleDragStart.bind(this)
   }
 
   public render() {
-    const iconDimension = 40;
+    const iconDimension = 20;
+
+    const locationIcon: Icon = new L.Icon({
+      iconRetinaUrl: this.props.icon,
+      iconSize: new L.Point(iconDimension, iconDimension),
+      iconUrl: this.props.icon,
+    });
+
+    const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y})
     return (
-      <g>
-        <title>{this.props.id}</title>
-        <image id={this.props.id}
-          style={{
-            WebkitFilter: "none",
-            boxShadow: "1px 1px black",
-            opacity: 1,
-          }}
-          onDragStart={this.handleDragStart}
-          stroke="#1aff80"
-          strokeWidth="2"
-          width={iconDimension + "px"}
-          height={iconDimension + "px"}
-          x={this.props.x - iconDimension / 2}
-          y={this.props.y - iconDimension / 2}
-          onMouseEnter={this.handleOnMouseEnter}
-          onMouseLeave={this.handleOnMouseLeave}
-          xlinkHref={this.props.icon}
-        />
-      </g>
+
+      <Marker position={location} icon={locationIcon}>
+        <Popup>
+          {this.props.id}
+        </Popup>
+      </Marker>
     )
-  }
-  public handleOnMouseEnter() {
-    this.setState({ hover: true })
-  }
-  public handleOnMouseLeave() {
-    this.setState({ hover: false })
-  }
-  public handleDragStart(event: any) {
-    event.preventDefault();
   }
 }
 
