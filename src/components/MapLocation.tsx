@@ -45,7 +45,6 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
 
     const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y})
 
-    console.log(location)
     return (
 
       <Marker position={location} icon={locationIcon}>
