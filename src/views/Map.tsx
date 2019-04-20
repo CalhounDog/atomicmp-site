@@ -3,8 +3,6 @@ import * as React from "react";
 import {
   ImageOverlay,
   Map as LeafletMap,
-  Marker,
-  Popup,
 } from "react-leaflet";
 import backend from 'src/utils/network';
 import MapLocation from '../components/MapLocation';
@@ -58,6 +56,7 @@ class Map extends React.Component<IMapProps, IMapState> {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderPlayer = this.renderPlayer.bind(this);
     this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   public componentDidMount() {
@@ -75,8 +74,8 @@ class Map extends React.Component<IMapProps, IMapState> {
     const w = 2048;
     const h = 2048;
 
-    const southWest: [number, number] = [0, 0];
-    const northEast: [number, number] = [w, h];
+    const southWest: [number, number] = [0, h];
+    const northEast: [number, number] = [w, 0];
     const bounds = new LatLngBounds(southWest, northEast);
     const position: [number, number] = [this.state.playerLocation.x, this.state.playerLocation.y];
     return (
@@ -96,16 +95,13 @@ class Map extends React.Component<IMapProps, IMapState> {
         maxBound={bounds}
         continuousWorld={false}
         crs={CRS.Simple}
+        onClick={this.handleClick}
       >
         <ImageOverlay
           url={mapBackground}
           bounds={bounds}
         />
-        <Marker position={[this.state.playerLocation.y, this.state.playerLocation.x]}>
-            <Popup>
-              <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-            </Popup>
-          </Marker>
+        {this.renderLocationIcons()}
       </LeafletMap>
     );
   }
@@ -124,6 +120,10 @@ class Map extends React.Component<IMapProps, IMapState> {
       )
     } 
     return;
+  }
+
+  public handleClick(event: any) {
+    console.log(event)
   }
 
   public handleKeyPress(event: KeyboardEvent) {

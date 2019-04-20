@@ -1,4 +1,8 @@
+import * as L from 'leaflet';
+import { Icon } from 'leaflet';
 import * as React from 'react';
+import { Marker, Popup } from 'react-leaflet';
+import { mapImagePointToLatLng } from 'src/utils/helpers';
 
 interface IMapLocationProps {
   id: string;
@@ -25,10 +29,30 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
 
   public render() {
     const iconDimension = 40;
+
+    const locationIcon: Icon = new L.Icon({
+      // className: 'leaflet-div-icon',
+      iconAnchor: undefined,
+      iconSize: new L.Point(iconDimension, iconDimension),
+// tslint:disable-next-line: object-literal-sort-keys
+      iconRetinaUrl: this.props.icon,
+      iconUrl: this.props.icon,
+      popupAnchor: undefined,
+      shadowUrl: undefined,
+      shadowSize: undefined,
+      shadowAnchor: undefined,
+    });
+
+    const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y})
+
+    console.log(location)
     return (
-      <g>
-        <title>{this.props.id}</title>
-        <image id={this.props.id}
+
+      <Marker position={location} icon={locationIcon}>
+        <Popup>
+          <span>{this.props.id}</span>
+        </Popup><title>{this.props.id}</title>
+        {/* <image id={this.props.id}
           style={{
             WebkitFilter: "none",
             boxShadow: "1px 1px black",
@@ -44,8 +68,8 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           xlinkHref={this.props.icon}
-        />
-      </g>
+        /> */}
+      </Marker>
     )
   }
   public handleOnMouseEnter() {
