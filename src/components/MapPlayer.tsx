@@ -14,14 +14,9 @@ class MapPlayer extends React.Component<any, any> {
     const iconDimension = 20;
 
     const locationIcon: Icon = new L.Icon({
-      iconAnchor: undefined,
       iconRetinaUrl: playerArrow,
       iconSize: new L.Point(iconDimension, iconDimension),
       iconUrl: playerArrow,
-      popupAnchor: undefined,
-      shadowAnchor: undefined,
-      shadowSize: undefined,
-      shadowUrl: undefined,
     });
 
     const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y })

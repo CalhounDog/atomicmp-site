@@ -26,14 +26,9 @@ class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocatio
     const iconDimension = 20;
 
     const locationIcon: Icon = new L.Icon({
-      iconAnchor: undefined,
       iconRetinaUrl: this.props.icon,
       iconSize: new L.Point(iconDimension, iconDimension),
       iconUrl: this.props.icon,
-      popupAnchor: undefined,
-      shadowAnchor: undefined,
-      shadowSize: undefined,
-      shadowUrl: undefined,
     });
 
     const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y})
