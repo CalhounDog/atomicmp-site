@@ -4,6 +4,7 @@ import {
   ImageOverlay,
   Map as LeafletMap,
 } from "react-leaflet";
+import { mapImagePointToLatLng } from 'src/utils/helpers';
 import backend from 'src/utils/network';
 import MapLocation from '../components/MapLocation';
 import PlayerArrow from "../components/MapPlayer";
@@ -61,9 +62,9 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
-    this.fetchFactionMembers().then(factionMembersData => {
-      this.setState(state => ({ ...state, factionMembersData }))
-    }).catch(console.error)
+    // this.fetchFactionMembers().then(factionMembersData => {
+    //   this.setState(state => ({ ...state, factionMembersData }))
+    // }).catch(console.error)
     this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
   }
   public componentWillUnmount() {
@@ -77,7 +78,9 @@ class Map extends React.Component<IMapProps, IMapState> {
     const southWest: [number, number] = [0, h];
     const northEast: [number, number] = [w, 0];
     const bounds = new LatLngBounds(southWest, northEast);
-    const position: [number, number] = [this.state.playerLocation.x, this.state.playerLocation.y];
+
+    const playerPosition = mapImagePointToLatLng({x: this.state.playerLocation.x, y: this.state.playerLocation.y});
+    const position: [number, number] = [playerPosition.lat, playerPosition.lng];
     return (
       <LeafletMap
         style={{
@@ -113,7 +116,7 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public renderPlayer() {
     if (this.state.playerLocation) {
-      return (<PlayerArrow x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />)
+      return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />)
     } 
     return;
   }

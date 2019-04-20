@@ -4,8 +4,16 @@ import * as React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { mapImagePointToLatLng } from 'src/utils/helpers';
 import { playerArrow } from "../images/map-markers";
+import IUser from '../models/IUser';
 
-class MapPlayer extends React.Component<any, any> {
+interface IMapPlayerProps {
+  user: IUser;
+  x: number;
+  y: number;
+  fill: string;
+}
+
+class MapPlayer extends React.Component<IMapPlayerProps, any> {
   constructor(props: any) {
     super(props)
   }
@@ -24,8 +32,8 @@ class MapPlayer extends React.Component<any, any> {
     return (
       <Marker position={location} icon={locationIcon}>
         <Popup>
-          <span>{this.props.id}</span>
-        </Popup><title>{this.props.id}</title>
+          <span>{this.props.user.username}</span>
+        </Popup>
       </Marker>
     )
   }
