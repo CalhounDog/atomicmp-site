@@ -102,6 +102,7 @@ class Map extends React.Component<IMapProps, IMapState> {
           bounds={bounds}
         />
         {this.renderLocationIcons()}
+        {this.renderPlayer()}
       </LeafletMap>
     );
   }
@@ -112,12 +113,7 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public renderPlayer() {
     if (this.state.playerLocation) {
-      return (
-        <g>
-          <title>{this.props.user.username}</title>
-          <PlayerArrow x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />
-        </g>
-      )
+      return (<PlayerArrow x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />)
     } 
     return;
   }
