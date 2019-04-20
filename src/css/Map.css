@@ -1,3 +1,8 @@
+@font-face {
+	font-family: 'Monofonto';
+	src: url(../fonts/monofonto.ttf);
+}
+
 /* required styles */
 
 .leaflet-pane,
@@ -445,6 +450,11 @@
 	margin: 13px 19px;
 	line-height: 1.4;
 	}
+.leaflet-popup-content,
+.leaflet-popup-content * {
+	font-family: 'Monofonto';
+	font-weight:bold
+}
 .leaflet-popup-content p {
 	margin: 18px 0;
 	}
