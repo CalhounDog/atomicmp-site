@@ -47,10 +47,10 @@ class Map extends React.Component<IMapProps, IMapState> {
   public state = {
     factionMembersData: [],
     mapTheme: "map-theme-realistic",
-    maxZoom: 4,
-    minZoom: -2,
+    maxZoom: 3,
+    minZoom: -0.50,
     playerLocation: STARTING_COORDS,
-    zoom: -1,
+    zoom: 1,
   }
   constructor(props: IMapProps) {
     super(props);
