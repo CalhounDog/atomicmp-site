@@ -15,6 +15,7 @@ import Spinner from "./components/Spinner";
 
 import IUser from "./models/IUser";
 
+import Download from './views/Download';
 import Faction from "./views/Faction";
 import Home from "./views/Home";
 import Login from "./views/Login";
@@ -100,6 +101,14 @@ class App extends React.Component {
                   {...routeProps}
                 />
               }}
+            />
+            <Route
+              path="/download"
+              render={(routeProps) => (
+                <Download
+                  {...routeProps}
+                />
+              )}
             />
             <Redirect from="*" to="/" />
           </Switch>

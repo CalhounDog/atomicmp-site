@@ -1,0 +1,19 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead {
+  border-bottom: 3px solid var(--header-accent);
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  padding-bottom: 0;
+}
+
+tr:nth-child(even) {
+  background-color: var(--header-accent);
+  color: white;
+}

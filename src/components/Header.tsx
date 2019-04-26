@@ -48,6 +48,14 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         <Link onDragStart={this.handleDragStart} className="nav-logo" to="/">
           <img onDragStart={this.handleDragStart} src={logo} style={{ width: "300px", height: "58px" }} />
         </Link>
+
+        {this.state.isLoggedIn
+          ? this.renderAuthenticatedHeaderLinks()
+          : this.renderUnauthenticatedHeaderLinks()
+        }
+
+        <Link className="nav-item" to="/download">Download</Link>
+
         <a
           className="nav-item discord-icon"
           href="https://discord.gg/5kPpTKw"
@@ -56,11 +64,6 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
           <span>Discord </span>
           <i className="fab fa-discord" />
         </a>
-
-        {this.state.isLoggedIn
-          ? this.renderAuthenticatedHeaderLinks()
-          : this.renderUnauthenticatedHeaderLinks()
-        }
 
         <span
           className="nav-item icon"
