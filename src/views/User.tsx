@@ -27,7 +27,6 @@ class User extends React.Component <any, Partial<IRegisterState>> {
   
   constructor(props: any) {
     super(props);
-    console.log(props)
     this.lookupTargetUser = this.lookupTargetUser.bind(this)
   }
   

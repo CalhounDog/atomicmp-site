@@ -57,7 +57,6 @@ class Map extends React.Component<IMapProps, IMapState> {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderPlayer = this.renderPlayer.bind(this);
     this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   public componentDidMount() {
@@ -98,7 +97,6 @@ class Map extends React.Component<IMapProps, IMapState> {
         maxBound={bounds}
         continuousWorld={false}
         crs={CRS.Simple}
-        onClick={this.handleClick}
       >
         <ImageOverlay
           url={mapBackground}
@@ -119,10 +117,6 @@ class Map extends React.Component<IMapProps, IMapState> {
       return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />)
     } 
     return;
-  }
-
-  public handleClick(event: any) {
-    console.log(event)
   }
 
   public handleKeyPress(event: KeyboardEvent) {
