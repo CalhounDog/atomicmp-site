@@ -14,6 +14,16 @@ class Download extends React.Component {
   public buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "AI navigation and damage fixed for radscorpions, geckos, bighorners, raiders.",
+        "Changes to Lighting for map and tunnel.",
+        "Changes to gun sounds.",
+      ],
+      date: moment("April 27, 2019"),
+      link: "http://www.mediafire.com/file/3319e8f5kzj8jm4/AMP.rar/file",
+      version: "0.3.4",
+    },
+    {
+      changelog: [
         "Tweaked the lighting in the Character Customizer"
       ],
       date: moment("April 22, 2019"),
