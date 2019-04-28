@@ -14,6 +14,14 @@ class Download extends React.Component {
   public buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "Performance changes to lighting and town, Fixed Jukebox.",
+      ],
+      date: moment("April 28, 2019"),
+      link: "https://drive.google.com/file/d/1m3xKr7IgnqS6vFQ73izW6yQcNz-IzIt-/view?usp=sharing",
+      version: "0.3.5",
+    },
+    {
+      changelog: [
         "AI navigation and damage fixed for radscorpions, geckos, bighorners, raiders.",
         "Changes to Lighting for map and tunnel.",
         "Changes to gun sounds.",
