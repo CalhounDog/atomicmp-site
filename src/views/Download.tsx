@@ -12,6 +12,14 @@ interface IBuildInfo {
 
 class Download extends React.Component {
   public buildsList: IBuildInfo[] = [
+     {
+      changelog: [
+        "Fixed Bloatfly Damage, Looting Menu/Containers Fix, Third Person transition bug fix, Fixed Aiming Desync ",
+      ],
+      date: moment("April 30, 2019"),
+      link: "https://drive.google.com/file/d/1zrWlNRC44rflcVLZLnppqNpIjkEiVElt/view?usp=sharing",
+      version: "0.3.6",
+    },
     {
       changelog: [
         "Performance changes to lighting and town, Fixed Jukebox.",
