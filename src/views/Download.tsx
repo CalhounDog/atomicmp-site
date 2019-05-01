@@ -12,11 +12,11 @@ interface IBuildInfo {
 
 class Download extends React.Component {
   public buildsList: IBuildInfo[] = [
-     {
+    {
       changelog: [
-        "Fixed Bloatfly Damage", "Looting Menu/Containers Fix", "Third Person transition bug fix", "Fixed Aiming Desync ",
+        "Bloatfly projectile now does damage", "Adjusted 10mm Fire rate (Buff)", "Adjusted .308 Fire rate (Buff)", "Fixed the need to click once before you can exit the Pipboy with 'Tab'", "Fixed guns appearing to float when switching between 1st and 3rd person quickly", "Fixed aiming being clunky in high latency situations", "Fixed Pipboy UI scroll bar not matching the custom colour", "Fixed 'X' button not being correctly coloured in the setting menu", "Fixed 'X' button not functioning", 
       ],
-      date: moment("April 30, 2019"),
+      date: moment("May 01, 2019"),
       link: "https://drive.google.com/file/d/1zrWlNRC44rflcVLZLnppqNpIjkEiVElt/view?usp=sharing",
       version: "0.3.6",
     },
