@@ -12,6 +12,16 @@ interface IBuildInfo {
 
 class Download extends React.Component {
   public buildsList: IBuildInfo[] = [
+     {
+      changelog: [
+        "Bloatfly AI tweak",
+        "Raider AI tweak",
+        "Tweaked Hunger/Thirst Values",
+      ],
+      date: moment("May 04, 2019"),
+      link: "https://drive.google.com/file/d/1vhtXRnH3ilHbpDA3itGxoKopgheN7Uy6/view?usp=sharing",
+      version: "0.3.7",
+    },
     {
       changelog: [
         "Bloatfly projectile now does damage", 
