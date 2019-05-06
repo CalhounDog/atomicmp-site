@@ -14,6 +14,16 @@ class Download extends React.Component {
   public buildsList: IBuildInfo[] = [
      {
       changelog: [
+        "New Guns",
+        "Changes to Bullet System",
+        "Tweaked Ambient Occlusion",
+      ],
+      date: moment("May 05, 2019"),
+      link: "https://drive.google.com/file/d/1vhtXRnH3ilHbpDA3itGxoKopgheN7Uy6/view?usp=sharing",
+      version: "0.3.8",
+    },
+     {
+      changelog: [
         "Bloatfly AI tweak",
         "Raider AI tweak",
         "Tweaked Hunger/Thirst Values",
