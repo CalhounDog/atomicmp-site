@@ -1,4 +1,3 @@
-
 import moment from "moment";
 
 interface IBuildInfo {
@@ -9,7 +8,7 @@ interface IBuildInfo {
 }
 
 function dateConstructor(str: string): moment.Moment {
-  return moment(str, "MM DD, YYYY")
+  return moment(str, "MMMM DD, YYYY")
 }
 
 const buildsList: IBuildInfo[] = [
