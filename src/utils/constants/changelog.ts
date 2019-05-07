@@ -8,7 +8,7 @@ interface IBuildInfo {
   changelog: string[];
 }
 
-function dateConstructor(str: string) {
+function dateConstructor(str: string): moment.Moment {
   return moment(str, "MM DD, YYYY")
 }
 
@@ -19,7 +19,7 @@ const buildsList: IBuildInfo[] = [
         "Changes to Bullet System",
         "Tweaked Ambient Occlusion",
       ],
-      date: dateConstructor("May 05, 2019"),
+      date: "May 05, 2019",
       link: "https://drive.google.com/file/d/1vhtXRnH3ilHbpDA3itGxoKopgheN7Uy6/view?usp=sharing",
       version: "0.3.8",
     },
@@ -29,7 +29,7 @@ const buildsList: IBuildInfo[] = [
         "Raider AI tweak",
         "Tweaked Hunger/Thirst Values",
       ],
-      date: dateConstructor("May 04, 2019"),
+      date: "May 04, 2019",
       link: "https://drive.google.com/file/d/1vhtXRnH3ilHbpDA3itGxoKopgheN7Uy6/view?usp=sharing",
       version: "0.3.7",
     },
@@ -45,7 +45,7 @@ const buildsList: IBuildInfo[] = [
         "Fixed 'X' button not being correctly coloured in the setting menu",
         "Fixed 'X' button not functioning",
       ],
-      date: dateConstructor("May 01, 2019"),
+      date: "May 01, 2019",
       link: "https://drive.google.com/file/d/1zrWlNRC44rflcVLZLnppqNpIjkEiVElt/view?usp=sharing",
       version: "0.3.6",
     },
@@ -53,7 +53,7 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Performance changes to lighting and town, Fixed Jukebox.",
       ],
-      date: dateConstructor("April 28, 2019"),
+      date: "April 28, 2019",
       link: "https://drive.google.com/file/d/1m3xKr7IgnqS6vFQ73izW6yQcNz-IzIt-/view?usp=sharing",
       version: "0.3.5",
     },
@@ -63,7 +63,7 @@ const buildsList: IBuildInfo[] = [
         "Changes to Lighting for map and tunnel.",
         "Changes to gun sounds.",
       ],
-      date: dateConstructor("April 27, 2019"),
+      date: "April 27, 2019",
       link: "http://www.mediafire.com/file/3319e8f5kzj8jm4/AMP.rar/file",
       version: "0.3.4",
     },
@@ -71,13 +71,13 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Tweaked the lighting in the Character Customizer"
       ],
-      date: dateConstructor("April 22, 2019"),
+      date: "April 22, 2019",
       link: "https://drive.google.com/file/d/1m3xKr7IgnqS6vFQ73izW6yQcNz-IzIt-/view?usp=sharing",
       version: "0.3.3"
     },
     {
       changelog: ["Fixed Appearance-Set authentication related bug"],
-      date: dateConstructor("April 21, 2019"),
+      date: "April 21, 2019",
       link: "https://drive.google.com/file/d/1BjD1VFWHafLxqbvAUElnxaq7fFwGsg6B/view?usp=sharing",
       version: "0.3.2",
     },
@@ -87,7 +87,7 @@ const buildsList: IBuildInfo[] = [
         "Added in death and respawn system",
         "Shouldn't have a random floating sphere at default spawn now."
       ],
-      date: dateConstructor("December 31, 2018"),
+      date: "December 31, 2018",
       link: "https://www.dropbox.com/s/7aqbge270eah79i/WindowsNoEditor.rar?dl=0",
       version: "0.3.0",
     },
@@ -99,7 +99,7 @@ const buildsList: IBuildInfo[] = [
         "Added blood visual and sound effects to punch",
         "Added switch between 1st and 3rd person",
       ],
-      date: dateConstructor("December 30, 2018"),
+      date: "December 30, 2018",
       link: "https://www.dropbox.com/s/m66j1mw62bqgqer/WindowsNoEditor.rar?dl=0",
       version: "0.2.1",
     },
@@ -107,7 +107,7 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Fully implemented Server-side saving"
       ],
-      date: dateConstructor("December 27, 2018"),
+      date: "December 27, 2018",
       link: "https://www.dropbox.com/s/62dxo920hyotdc8/WindowsNoEditor.zip?dl=0",
       version: "0.2.0",
     },
@@ -115,7 +115,7 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Created RPG speech system"
       ],
-      date: dateConstructor("December 22, 2018"),
+      date: "December 22, 2018",
       link: "https://www.dropbox.com/s/h7rghct0yohb091/WindowsNoEditor.zip?dl=0",
       version: "0.1.4",
     },
@@ -123,7 +123,7 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Added Submachine Gun"
       ],
-      date: dateConstructor("December 21, 2018"),
+      date: "December 21, 2018",
       link: "https://www.dropbox.com/s/ipyl8mo6wrjgswp/WindowsNoEditor.zip?dl=0",
       version: "0.1.3",
     },
@@ -131,7 +131,7 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Experimented with Server-side saving"
       ],
-      date: dateConstructor("September 11, 2018"),
+      date: "September 11, 2018",
       link: "https://www.dropbox.com/s/ozn48nurzd65hc2/WindowsNoEditor.zip?dl=0",
       version: "0.1.2",
     },
@@ -139,7 +139,7 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Implemented character customization"
       ],
-      date: dateConstructor("September 9, 2018"),
+      date: "September 9, 2018",
       link: "https://www.dropbox.com/s/jdhkdzz1pt89gps/AMP-09-09-18.zip?dl=0",
       version: "0.1.1",
     },
@@ -147,10 +147,12 @@ const buildsList: IBuildInfo[] = [
       changelog: [
         "Initial Implementation"
       ],
-      date: dateConstructor("August 25, 2018"),
+      date: "August 25, 2018",
       link: "https://www.dropbox.com/s/d38336bouy9efoi/AMPBuild_29-07-18.zip?dl=0",
       version: "0.1.0",
     },
-  ].sort((a, b) => b.date.unix() - a.date.unix())
+  ]
+  .map(data => ({...data, date: dateConstructor(data.date)}))
+  .sort((a, b) => b.date.unix() - a.date.unix())
 
 export default buildsList;
