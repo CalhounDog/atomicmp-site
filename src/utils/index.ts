@@ -1,9 +1,10 @@
 import * as network from "./network";
 import {
-  locations
+  locations, changelog
  } from "./constants";
 
 export {
   network,
-  locations
+  locations,
+  changelog
 };
