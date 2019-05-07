@@ -172,7 +172,7 @@ class Download extends React.Component {
             return (
               <tr key={i}>
                 <td>{info.date.format("MMMM Do YYYY")}</td>
-                <td><a target="_blank" href={info.link} style={{textDecoration: "underline"}}>{info.version}</a></td>
+                <td><a target="_blank noopener noreferrer" href={info.link} style={{textDecoration: "underline"}}>{info.version}</a></td>
                 <td>{info.changelog ? this.renderChangelogList(info.changelog) : undefined}</td>
               </tr>
             )
@@ -196,7 +196,7 @@ class Download extends React.Component {
     return (
       <div>
         <h3>Build {info.version} - {info.date.format("MMMM Do YYYY")}</h3>
-        <a target="_blank" href={info.link}><span style={{backgroundColor: "var(--header-accent", color: "white", borderRadius: "5px", padding: "10px", margin: "15px 0", display: "inline-flex"}}>Download</span></a>
+        <a target="_blank noopener noreferrer" href={info.link}><span style={{backgroundColor: "var(--header-accent", color: "white", borderRadius: "5px", padding: "10px", margin: "15px 0", display: "inline-flex"}}>Download</span></a>
         {info.changelog
           ? (<div>
               <h3>Changes</h3>

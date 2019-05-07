@@ -18,10 +18,6 @@ interface IMapLocationState {
 class MapLocation extends React.Component<IMapLocationProps, Partial<IMapLocationState>> {
   public state = {}
 
-  constructor(props: IMapLocationProps) {
-    super(props);
-  }
-
   public render() {
     const iconDimension = 20;
 
