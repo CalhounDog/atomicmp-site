@@ -46,7 +46,7 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         id="topnav"
       >
         <Link onDragStart={this.handleDragStart} className="nav-logo" to="/">
-          <img onDragStart={this.handleDragStart} src={logo} style={{ width: "300px", height: "58px" }} />
+          <img onDragStart={this.handleDragStart} src={logo} alt="" style={{ width: "300px", height: "58px" }} />
         </Link>
 
         {this.state.isLoggedIn
@@ -59,7 +59,7 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
         <a
           className="nav-item discord-icon"
           href="https://discord.gg/5kPpTKw"
-          target="_blank"
+          target="_blank noopener noreferrer"
         >
           <span>Discord </span>
           <i className="fab fa-discord" />

@@ -14,9 +14,6 @@ interface IMapPlayerProps {
 }
 
 class MapPlayer extends React.Component<IMapPlayerProps, any> {
-  constructor(props: any) {
-    super(props)
-  }
 
   public render() {
     const iconDimension = 20;

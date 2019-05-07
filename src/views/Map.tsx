@@ -141,6 +141,7 @@ class Map extends React.Component<IMapProps, IMapState> {
         this.setState({mapTheme: "map-theme-white"});
         break;
       }
+      default: return;
     }
   }
 
