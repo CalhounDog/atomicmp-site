@@ -11,7 +11,7 @@ import mapBackground from "../images/map.png";
 import IUser from '../models/IUser';
 import { mapImagePointToLatLng } from '../utils/helpers';
 import { playerCoordsToImg } from '../utils/helpers';
-import locations from "../utils/locations";
+import locations from "../utils/constants/locations";
 import backend from '../utils/network';
 
 const STARTING_COORDS = {

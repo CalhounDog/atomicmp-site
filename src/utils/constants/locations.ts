@@ -11,7 +11,7 @@ import {
   smallHouse,
   tentCity,
   town,
-} from "../images/map-markers"
+} from "../../images/map-markers"
 
 export default [
   {
