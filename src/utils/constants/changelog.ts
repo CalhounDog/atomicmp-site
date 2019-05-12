@@ -14,6 +14,15 @@ function dateConstructor(str: string): moment.Moment {
 const buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "Shotgun and 44 pistol added",
+        "New Bullet System",
+      ],
+      date: "May 11, 2019",
+      link: "https://drive.google.com/file/d/1iza7Q_DZff4tBkpZDExQCFxexchbW2Jm/view?usp=sharing",
+      version: "0.3.9",
+    },
+    {
+      changelog: [
         "New Guns",
         "Changes to Bullet System",
         "Tweaked Ambient Occlusion",
