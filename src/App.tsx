@@ -74,7 +74,7 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route path="/faction" component={Faction} />
+            <Route path="/faction/:factionId" component={Faction} />
             <Route
               path="/recovery"
               render={(routeProps) => (
