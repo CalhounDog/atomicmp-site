@@ -12,7 +12,7 @@ const BASE_CONFIG = {
 const backend: AxiosInstance = axios.create(BASE_CONFIG)
 
 const authConstructor = function () {
-  const token = window.sessionStorage.getItem("authToken");
+  const token = window.localStorage.getItem("authToken") || window.sessionStorage.getItem("authToken");
   if (token) {
     return axios.create(Object.assign(BASE_CONFIG, {
       headers: { Authorization: `Bearer ${token}` },

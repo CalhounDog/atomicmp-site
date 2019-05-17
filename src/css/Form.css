@@ -7,7 +7,7 @@ form {
 	margin: 20px 0;
 }
 
-form input{
+form input[type="text"], form input[type="password"]{
 	font-family: "Roboto",sans-serif;
 	display:block;
 	clear:both;
@@ -15,6 +15,10 @@ form input{
   color: var(--header-accent);
 	background: white;
 	cursor: var(--input);
+}
+
+form input[type="checkbox"] {
+	cursor: inherit;
 }
 
 form input[type="submit"] {

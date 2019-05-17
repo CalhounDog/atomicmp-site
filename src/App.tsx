@@ -131,7 +131,7 @@ class App extends React.Component {
   }
 
   public async fetchAuth() {
-    const token = window.sessionStorage.getItem("authToken");
+    const token = window.localStorage.getItem("authToken") || window.sessionStorage.getItem("authToken");;
     if (token) {
       const response = await backend.get("/me", {
         headers: { Authorization: `Bearer ${token}` },
@@ -152,6 +152,7 @@ class App extends React.Component {
 
   public logout() {
     window.sessionStorage.removeItem("authToken");
+    window.localStorage.removeItem("authToken");
     this.setState({ user: undefined });
     document.location.href = "/";
   }
