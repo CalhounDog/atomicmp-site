@@ -12,7 +12,8 @@ import IUser from '../models/IUser';
 import { mapImagePointToLatLng } from '../utils/helpers';
 import { playerCoordsToImg } from '../utils/helpers';
 import locations from "../utils/constants/locations";
-import backend from '../utils/network';
+import { auth } from '../utils/network';
+import MapFactionMember from '../components/MapFactionMember';
 
 const STARTING_COORDS = {
   x: 69449.953125,
@@ -45,7 +46,7 @@ interface IMapState {
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
-    factionMembersData: [],
+    factionMembersData: [] as IFactionMemberPositionData[],
     mapTheme: "map-theme-realistic",
     maxZoom: 3,
     minZoom: -1,
@@ -61,9 +62,10 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
-    // this.fetchFactionMembers().then(factionMembersData => {
-    //   this.setState(state => ({ ...state, factionMembersData }))
-    // }).catch(console.error)
+    this.fetchFactionMembers().then(factionMembersData => {
+      console.log(factionMembersData)
+      this.setState(state => ({ ...state, factionMembersData }))
+    }).catch(console.error)
     this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
   }
   public componentWillUnmount() {
@@ -103,9 +105,13 @@ class Map extends React.Component<IMapProps, IMapState> {
           bounds={bounds}
         />
         {this.renderLocationIcons()}
+        {this.renderFactionMembers()}
         {this.renderPlayer()}
       </LeafletMap>
     );
+  }
+  public renderFactionMembers() {
+    return this.state.factionMembersData.map(factionMember => <MapFactionMember key={factionMember.username} x={factionMember.x_pos} y={factionMember.y_pos} username={factionMember.username}/>)
   }
 
   public renderLocationIcons() {
@@ -146,8 +152,8 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
 
   private async fetchFactionMembers(): Promise<IFactionMemberPositionData[]> {
-    const { data } = await backend.get('api/faction')
-    return [...data];
+    const { data } = await auth.get('/api/faction/'+this.props.user.faction);
+    return data.users.filter((user: IUser) => this.props.user.user_id !== user.user_id && (user.x_pos !== null && user.y_pos !== null && user.z_pos !== null));
   }
 }
 
