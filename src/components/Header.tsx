@@ -5,13 +5,13 @@ import logo from "../images/amp-header-logo-low.png"
 import IUser from "../models/IUser";
 
 interface INavProps {
-  user: (IUser | undefined),
+  user?: IUser,
   logout: () => void
 }
 
 interface INavState {
   showResponsiveMenu: boolean;
-  user: (IUser | undefined);
+  user?: IUser;
   isLoggedIn: boolean;
 }
 

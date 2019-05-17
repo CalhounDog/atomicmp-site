@@ -32,8 +32,8 @@ interface IAppState {
   loading: boolean;
 }
 
-class App extends React.Component {
-  public state: IAppState = {
+class App extends React.Component<any, IAppState> {
+  public state = {
     loading: true,
     user: undefined,
   }

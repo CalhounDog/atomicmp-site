@@ -13,12 +13,7 @@ interface IFactionsListState {
 class FactionsList extends React.Component<any, IFactionsListState> {
   public state = {
     loading: true,
-    factions: [{
-      id: 1,
-      name: "",
-      color: "",
-      users: [] as any[]
-    }]
+    factions: [] as IFaction[]
   }
 
   constructor(props: any) {

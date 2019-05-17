@@ -19,7 +19,7 @@ interface ILoginState {
 }
 
 class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
-  public state: ILoginState = {
+  public state = {
     error: "",
     formData: {
       password: "",

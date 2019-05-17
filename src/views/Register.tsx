@@ -26,7 +26,7 @@ class Register extends React.Component<
   IRegistrationProps,
   Partial<IRegistrationState>
 > {
-  public state: IRegistrationState = {
+  public state = {
     error: "",
     formData: {
       confirmPassword: "",

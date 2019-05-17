@@ -10,19 +10,14 @@ interface ITargetUser {
 }
 
 interface IRegisterState {
-  target?: ITargetUser;
+  targetUser?: ITargetUser;
   loading: boolean;
 }
 
 class User extends React.Component <any, Partial<IRegisterState>> {
   public state = {
     loading: false,
-    target: {
-      faction: "",
-      id: "",
-      role: "",
-      username: "",
-    },
+    targetUser: {} as ITargetUser,
   }
   
   constructor(props: any) {
@@ -41,7 +36,7 @@ class User extends React.Component <any, Partial<IRegisterState>> {
         </Container>
       )
     } else {
-      if (this.state.target.username === "") {
+      if (this.state.targetUser.username === "") {
         return (
           <Container>
             <h2>User data not found</h2>
@@ -50,7 +45,7 @@ class User extends React.Component <any, Partial<IRegisterState>> {
       } else {
         return (
           <Container>
-            <h2>{this.state.target.username}</h2>
+            <h2>{this.state.targetUser.username}</h2>
           </Container>
         )
       }
