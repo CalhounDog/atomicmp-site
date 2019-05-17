@@ -3,23 +3,17 @@ import Container from "../components/Container"
 import { auth } from "../utils/network";
 import IFaction from "../models/IFaction";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 interface IFactionState {
-  factionFound: boolean;
   loading: boolean;
   factionData?: IFaction;
 }
 
 class Faction extends React.Component<any, IFactionState> {
   public state = {
-    loading: false,
-    factionFound: false,
-    factionData: {
-      color: "",
-      id: 0,
-      name: "",
-      users: [] as any[]
-    }
+    loading: true,
+    factionData: {} as IFaction
   }
 
   constructor(props: any) {
@@ -33,7 +27,7 @@ class Faction extends React.Component<any, IFactionState> {
     this.lookupTargetFaction(this.state.factionData.id).then(data => {
       ctx.setState(state => ({
         ...state,
-        factionFound: true,
+        loading: false,
         factionData: data
       }));
     })
@@ -43,9 +37,12 @@ class Faction extends React.Component<any, IFactionState> {
     return (
       <div>
         <Container>
-          {this.state.factionFound
-            ? this.renderFactionData()
-            : this.factionNotFound()
+          {
+            this.state.loading
+              ? Spinner()
+              : this.state.factionData
+                  ? this.renderFactionData()
+                  : this.factionNotFound()
           }
         </Container>
       </div>
@@ -59,17 +56,19 @@ class Faction extends React.Component<any, IFactionState> {
           {this.state.factionData.name}
         </h1>
         <h2>Members</h2>
+        <ul style={{ marginLeft: "30px" }}>
         {
           this.state.factionData.users.map((user: any) => {
             return (
-              <p key={"user"+user.user_id}>
+              <li key={"user"+user.user_id}>
                 <Link to={"/user/" + user.user_id}>
                   {user.username}
                 </Link>
-              </p>
+              </li>
             )
           })
         }
+        </ul>
       </div>
     )
   }
