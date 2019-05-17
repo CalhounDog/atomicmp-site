@@ -26,6 +26,8 @@ class MapPlayer extends React.Component<IMapPlayerProps, any> {
 
     const location = mapImagePointToLatLng({ x: this.props.x, y: this.props.y })
 
+    console.log(this.props.user.username)
+    console.log(location)
     return (
       <Marker position={location} icon={locationIcon}>
         <Popup>
