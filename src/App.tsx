@@ -23,6 +23,7 @@ import Map from './views/Map';
 import Recovery from "./views/Recovery";
 import Register from "./views/Register";
 import User from './views/User';
+import FactionsList from "./views/FactionsList";
 
 // tslint:disable: jsx-no-lambda
 
@@ -75,6 +76,7 @@ class App extends React.Component {
               )}
             />
             <Route path="/faction/:factionId" component={Faction} />
+            <Route path="/factions" component={FactionsList} />
             <Route
               path="/recovery"
               render={(routeProps) => (
