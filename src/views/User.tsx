@@ -4,20 +4,23 @@ import { auth } from '../utils/network';
 import Spinner from '../components/Spinner';
 import { Link } from 'react-router-dom';
 import IFaction from '../models/IFaction';
+import moment, { Moment } from 'moment';
 
 interface ITargetUser {
   faction?: IFaction;
   id: number;
   username: string;
   role: number;
+  created_at: Moment;
+  last_seen: Moment;
 }
 
-interface IRegisterState {
+interface IUserState {
   targetUser?: ITargetUser;
   loading: boolean;
 }
 
-class User extends React.Component <any, Partial<IRegisterState>> {
+class User extends React.Component <any, Partial<IUserState>> {
   public state = {
     loading: true,
     targetUser: {} as ITargetUser,
@@ -54,27 +57,23 @@ class User extends React.Component <any, Partial<IRegisterState>> {
 
   public async lookupTargetUser(userId: number) {
     const { data } = await auth.get("/api/user/"+userId)
-
+    let faction;
     if (data.faction) {
-      const faction = (await auth.get("/api/faction/"+data.faction)).data
-      return {
-        faction,
-        username: data.username,
-        role: data.role,
-        id: data.user_id,
-      }
+      faction = (await auth.get("/api/faction/"+data.faction)).data
     }
 
     return {
-      username: data.username,
-      role: data.role,
-      id: data.user_id,
+      ...data,
+      last_seen: moment(data.last_seen),
+      created_at: moment(data.created_at),
+      faction,
     }
   }
 
   public renderUserData() {
     return (
       <div>
+        <Link to="/users">◄ All Users</Link>
         <h1>{this.state.targetUser.username}</h1>
         {this.state.targetUser.faction
           ? <p>Member of&nbsp;
@@ -84,6 +83,8 @@ class User extends React.Component <any, Partial<IRegisterState>> {
             </p>
           : <p></p>
         }
+        <p>Joined: {this.state.targetUser.created_at.fromNow()}</p>
+        <p>Last Seen: {this.state.targetUser.last_seen.fromNow()}</p>
       </div>
     )
   }
