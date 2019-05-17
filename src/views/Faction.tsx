@@ -1,35 +1,25 @@
 import * as React from "react";
 import Container from "../components/Container"
 import { auth } from "../utils/network";
+import IFaction from "../models/IFaction";
+import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 interface IFactionState {
-  factionFound: boolean;
   loading: boolean;
-  factionData?: {
-    id?: number;
-    name?: string;
-    color?: string;
-  }
+  factionData?: IFaction;
 }
 
 class Faction extends React.Component<any, IFactionState> {
   public state = {
-    loading: false,
-    factionFound: false,
-    factionData: {
-      color: "",
-      id: 0,
-      name: ""
-    }
+    loading: true,
+    factionData: {} as IFaction
   }
 
   constructor(props: any) {
     super(props);
-
-    console.log(props)
     this.lookupTargetFaction = this.lookupTargetFaction.bind(this);
     this.state.factionData.id = props.match.params.factionId;
-
   }
 
   public componentDidMount() {
@@ -37,7 +27,7 @@ class Faction extends React.Component<any, IFactionState> {
     this.lookupTargetFaction(this.state.factionData.id).then(data => {
       ctx.setState(state => ({
         ...state,
-        factionFound: true,
+        loading: false,
         factionData: data
       }));
     })
@@ -47,9 +37,12 @@ class Faction extends React.Component<any, IFactionState> {
     return (
       <div>
         <Container>
-          {this.state.factionFound
-            ? this.renderFactionData()
-            : this.factionNotFound()
+          {
+            this.state.loading
+              ? Spinner()
+              : this.state.factionData
+                  ? this.renderFactionData()
+                  : this.factionNotFound()
           }
         </Container>
       </div>
@@ -59,13 +52,23 @@ class Faction extends React.Component<any, IFactionState> {
   public renderFactionData() {
     return (
       <div>
-        <h1>Faction</h1>
-        <h2>ID</h2>
-        <p>{this.state.factionData.id}</p>
-        <h2>Name</h2>
-        <p>{this.state.factionData.name}</p>
-        <h2>Color</h2>
-        <p>{this.state.factionData.color}</p>
+        <h1 style={{color: this.state.factionData.color}}>
+          {this.state.factionData.name}
+        </h1>
+        <h2>Members</h2>
+        <ul style={{ marginLeft: "30px" }}>
+        {
+          this.state.factionData.users.map((user: any) => {
+            return (
+              <li key={"user"+user.user_id}>
+                <Link to={"/user/" + user.user_id}>
+                  {user.username}
+                </Link>
+              </li>
+            )
+          })
+        }
+        </ul>
       </div>
     )
   }
@@ -78,11 +81,12 @@ class Faction extends React.Component<any, IFactionState> {
   }
 
   public async lookupTargetFaction(factionId: number) {
-    const { data } = await auth.get("/api/faction-lookup/" + factionId)
+    const { data } = await auth.get("/api/faction/" + factionId)
     return {
       color: data.color,
       name: data.faction_name,
-      id: data.faction_id
+      id: data.faction_id,
+      users: data.users,
     }
   }
 }
