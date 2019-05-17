@@ -24,6 +24,7 @@ import Recovery from "./views/Recovery";
 import Register from "./views/Register";
 import User from './views/User';
 import FactionsList from "./views/FactionsList";
+import UsersList from "./views/UsersList";
 
 // tslint:disable: jsx-no-lambda
 
@@ -89,6 +90,14 @@ class App extends React.Component {
               path="/user/:targetUserId"
               render={(routeProps) => (
                 <User
+                  {...routeProps}
+                />
+              )}
+            />
+            <Route
+              path="/users"
+              render={(routeProps) => (
+                <UsersList
                   {...routeProps}
                 />
               )}
