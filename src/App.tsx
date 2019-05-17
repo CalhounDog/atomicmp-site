@@ -28,14 +28,14 @@ import FactionsList from "./views/FactionsList";
 // tslint:disable: jsx-no-lambda
 
 interface IAppState {
-  user?: IUser;
+  user: (IUser | undefined);
   loading: boolean;
 }
 
-class App extends React.Component<any, IAppState> {
-  public state = {
+class App extends React.Component {
+  public state: IAppState = {
     loading: true,
-    user: {} as IUser,
+    user: undefined,
   }
 
   constructor(props: any) {
@@ -98,10 +98,11 @@ class App extends React.Component<any, IAppState> {
               render={(routeProps) => {
                 if (!this.state.user) {
                   return <Redirect to="/"/>
+                } else {
+                  return <Map user={this.state.user}
+                    {...routeProps}
+                  />
                 }
-                return <Map user={this.state.user}
-                  {...routeProps}
-                />
               }}
             />
             <Route
