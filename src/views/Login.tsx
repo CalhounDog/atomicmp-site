@@ -12,6 +12,7 @@ interface ILoginState {
   redirect: boolean;
   error: string;
   submitting: boolean;
+  remember: boolean;
   formData: {
     username: string;
     password: string;
@@ -23,8 +24,9 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
     error: "",
     formData: {
       password: "",
-      username: ""
+      username: "",
     },
+    remember: true,
     redirect: false,
     submitting: false
   };
@@ -34,6 +36,7 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleRememberMeChange = this.handleRememberMeChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -79,6 +82,15 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
               required={true}
             />
           </label>
+          <label>
+            Remember Me:
+            <input
+              type="checkbox"
+              name="remember"
+              checked={this.state.remember}
+              onChange={this.handleRememberMeChange}
+            />
+          </label>
           <p className="error">{this.state.error}</p>
           <input type="submit" value="Log In" />
         </form>
@@ -100,13 +112,18 @@ class Login extends React.Component<ILoginProps, Partial<ILoginState>> {
       formData: { ...this.state.formData, password: value }
     });
   }
+  public handleRememberMeChange(event: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({ remember: !this.state.remember });
+  }
 
   public async submitForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     this.setState({ submitting: true });
     try {
       const { data } = await backend.post("/login", this.state.formData)
-      window.sessionStorage.setItem("authToken", data.token);
+      this.state.remember
+        ? window.localStorage.setItem("authToken", data.token)
+        : window.sessionStorage.setItem("authToken", data.token)
       await this.props.fetchAuth();
       this.setState({redirect: true})
     } catch (error) {

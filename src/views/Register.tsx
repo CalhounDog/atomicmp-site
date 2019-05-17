@@ -173,7 +173,7 @@ class Register extends React.Component<
     try {
       const {data} = await backend.post("/register", this.state.formData)
 
-      window.sessionStorage.setItem("authToken", data.token);
+      window.localStorage.setItem("authToken", data.token);
       await this.props.fetchAuth();
       this.setState({redirect: true});
     }
