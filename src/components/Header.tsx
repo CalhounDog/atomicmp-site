@@ -19,7 +19,7 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
   public state = {
     isLoggedIn: false,
     showResponsiveMenu: false,
-    user: undefined,
+    user: {} as IUser,
   };
 
   constructor(props: any) {
@@ -89,12 +89,11 @@ class Header extends React.Component<INavProps, Partial<INavState>> {
     )
   }
   private renderAuthenticatedHeaderLinks() {
-    const user = Object.assign({username: "", user_id: 0}, this.state.user);
-    const userURl = `/user/${user.user_id}`
+    const userURl = `/user/${this.state.user.user_id}`
     return (
       <div>
         <Link className="nav-item" to={userURl}>
-          {user.username}
+          {""+this.state.user.username}
         </Link>
         <Link className="nav-item" to="/map">
           Map

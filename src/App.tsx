@@ -35,7 +35,7 @@ interface IAppState {
 class App extends React.Component<any, IAppState> {
   public state = {
     loading: true,
-    user: undefined,
+    user: {} as IUser,
   }
 
   constructor(props: any) {
@@ -86,7 +86,7 @@ class App extends React.Component<any, IAppState> {
               )}
             />
             <Route
-              path="/user"
+              path="/user/:targetUserId"
               render={(routeProps) => (
                 <User
                   {...routeProps}

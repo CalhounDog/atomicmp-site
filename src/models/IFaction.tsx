@@ -1,6 +1,6 @@
 interface IFaction {
-  id: number;
-  name: string;
+  faction_id: number;
+  faction_name: string;
   color: string;
   users: any[];
 }

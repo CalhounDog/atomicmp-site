@@ -19,12 +19,12 @@ class Faction extends React.Component<any, IFactionState> {
   constructor(props: any) {
     super(props);
     this.lookupTargetFaction = this.lookupTargetFaction.bind(this);
-    this.state.factionData.id = props.match.params.factionId;
+    this.state.factionData.faction_id = props.match.params.factionId;
   }
 
   public componentDidMount() {
     const ctx = this;
-    this.lookupTargetFaction(this.state.factionData.id).then(data => {
+    this.lookupTargetFaction(this.state.factionData.faction_id).then(data => {
       ctx.setState(state => ({
         ...state,
         loading: false,
@@ -52,8 +52,9 @@ class Faction extends React.Component<any, IFactionState> {
   public renderFactionData() {
     return (
       <div>
+        <Link to="/factions">◄ All Factions</Link>
         <h1 style={{color: this.state.factionData.color}}>
-          {this.state.factionData.name}
+          {this.state.factionData.faction_name}
         </h1>
         <h2>Members</h2>
         <ul style={{ marginLeft: "30px" }}>
@@ -84,8 +85,8 @@ class Faction extends React.Component<any, IFactionState> {
     const { data } = await auth.get("/api/faction/" + factionId)
     return {
       color: data.color,
-      name: data.faction_name,
-      id: data.faction_id,
+      faction_name: data.faction_name,
+      faction_id: data.faction_id,
       users: data.users,
     }
   }

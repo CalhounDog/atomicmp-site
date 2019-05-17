@@ -62,13 +62,13 @@ class FactionsList extends React.Component<any, IFactionsListState> {
             </tr>
           </thead>
           <tbody>
-            {this.state.factions.map(faction => {
+            {this.state.factions.map((faction, i) => {
               return (
-                <tr key={`faction${faction.id}`}>
+                <tr key={`faction${faction.faction_id}`}>
                   <td>
-                    <Link to={"/faction/" + faction.id}>
+                    <Link to={"/faction/" + faction.faction_id}>
                       <span style={{color: faction.color}}>■ </span>
-                      {faction.name}
+                      {faction.faction_name}
                     </Link>
                   </td>
                   <td>{faction.color}</td>
@@ -90,11 +90,7 @@ class FactionsList extends React.Component<any, IFactionsListState> {
 
   public async lookupFactions() {
     const { data } = await auth.get("/api/factions")
-    return data.factions.map((faction: any) => ({
-      color: faction.color,
-      name: faction.faction_name,
-      id: faction.faction_id,
-    }))
+    return data.factions
   }
 }
 
