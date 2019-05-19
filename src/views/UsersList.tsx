@@ -90,8 +90,9 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
         </thead>
         <tbody>
 
-          {this.state.users.slice((this.state.page - 1) * this.pageCount, (this.state.page) * this.pageCount).map(user => {
-            return (
+          {this.state.users
+            .slice((this.state.page - 1) * this.pageCount, (this.state.page) * this.pageCount)
+            .map(user => (
               <tr key={user.user_id}>
                 <td>
                   <Link to={"/user/"+user.user_id}>
@@ -110,8 +111,8 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
                   
                 </td>
               </tr>
-            )
-          })}
+            ))
+          }
         </tbody>
       </table>
     )
@@ -127,11 +128,12 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
   }
 
   public renderControlBar() {
+    const buttonStyle = { backgroundColor: "var(--header-accent)", padding: "5px 17px", borderColor: "white" }
     return (
-      <div>
-        <button onClick={this.handlePrevPageClick}>◄</button>
-        <button onClick={this.handleNextPageClick}>►</button>
-        <p>Page {this.state.page}/{this.lastPage()}</p>
+      <div style={{display: "flex", justifyContent: "flex-start"}}>
+          <button style={buttonStyle} onClick={this.handlePrevPageClick}>◄</button>
+          <button style={buttonStyle} onClick={this.handleNextPageClick}>►</button>
+        <p style={{margin:"0 10px"}}>Page {this.state.page}/{this.lastPage()}</p>
       </div>
     )
   }
