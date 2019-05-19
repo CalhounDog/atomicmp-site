@@ -128,7 +128,12 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
   }
 
   public renderControlBar() {
-    const buttonStyle = { backgroundColor: "var(--header-accent)", padding: "5px 17px", borderColor: "white" }
+    const buttonStyle = {
+      backgroundColor: "var(--header-accent)",
+      padding: "5px 17px",
+      border: "2px solid white",
+      color: "white"
+    }
     return (
       <div style={{display: "flex", justifyContent: "flex-start"}}>
           <button style={buttonStyle} onClick={this.handlePrevPageClick}>◄</button>
