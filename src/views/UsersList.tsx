@@ -16,6 +16,7 @@ interface IRegisterState {
   loading: boolean;
   users: ITargetUser[];
   page: number;
+  pageCount: number;
 }
 
 class UsersList extends React.Component <any, Partial<IRegisterState>> {
@@ -23,9 +24,8 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
     loading: true,
     users: [] as ITargetUser[],
     page: 1 as number,
+    pageCount: 25 as number,
   }
-
-  private pageCount = 25;
   
   constructor(props: any) {
     super(props);
@@ -35,6 +35,7 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
     this.handleNextPageClick = this.handleNextPageClick.bind(this);
     this.handlePrevPageClick = this.handlePrevPageClick.bind(this);
     this.lastPage = this.lastPage.bind(this);
+    this.handlePageCountChange = this.handlePageCountChange.bind(this);
   }
   
   public componentDidMount() {
@@ -76,10 +77,16 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
   }
 
   private lastPage() {
-    return Math.ceil(this.state.users.length / this.pageCount)
+    return Math.ceil(this.state.users.length / this.state.pageCount)
   }
 
   public renderUsersTable() {
+    let usersList = this.state.users;
+
+    if (this.state.pageCount) {
+      usersList = usersList.slice((this.state.page - 1) * this.state.pageCount, (this.state.page) * this.state.pageCount)
+    }
+
     return (
       <table>
         <thead>
@@ -90,8 +97,7 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
         </thead>
         <tbody>
 
-          {this.state.users
-            .slice((this.state.page - 1) * this.pageCount, (this.state.page) * this.pageCount)
+          {usersList
             .map(user => (
               <tr key={user.user_id}>
                 <td>
@@ -136,9 +142,23 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
     }
     return (
       <div style={{display: "flex", justifyContent: "flex-start"}}>
-          <button style={buttonStyle} onClick={this.handlePrevPageClick}>◄</button>
-          <button style={buttonStyle} onClick={this.handleNextPageClick}>►</button>
-        <p style={{margin:"0 10px"}}>Page {this.state.page}/{this.lastPage()}</p>
+        <button style={buttonStyle} onClick={this.handlePrevPageClick}>◄</button>
+        <button style={buttonStyle} onClick={this.handleNextPageClick}>►</button>
+        {
+          this.state.pageCount
+            ? (<p style={{ margin: "0 10px" }}>Page {this.state.page}/{this.lastPage()}</p>)
+            : (<p/>)
+        }
+        <label style={{ margin: "0 10px", fontSize: "20px" }}>
+          Page Count:
+          <select value={this.state.pageCount} onChange={this.handlePageCountChange}>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={75}>75</option>
+            <option value={100}>100</option>
+            <option value={0}>All</option>
+          </select>
+        </label>
       </div>
     )
   }
@@ -161,6 +181,10 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
       ? this.state.page - 1
       : 1
     this.setState({ page })
+  }
+  public handlePageCountChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    event.preventDefault();
+    this.setState({ pageCount: +event.target.value, page: 1})
   }
 }
 
