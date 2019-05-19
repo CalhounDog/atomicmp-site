@@ -199,7 +199,6 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
       <div>
         {this.renderControlBar()}
         <h1>Users not found!</h1>
-        {this.renderControlBar()}
       </div>
     )
   }
