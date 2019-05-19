@@ -158,27 +158,35 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
       padding: "5px 17px",
       border: "2px solid white",
       color: "white",
+      display: "block",
     }
     return (
-      <div style={{display: "flex", justifyContent: "flex-start"}}>
-        <button style={buttonStyle} onClick={this.handlePrevPageClick}>◄</button>
-        <button style={buttonStyle} onClick={this.handleNextPageClick}>►</button>
+      <div style={{display: "flex", justifyContent: "flex-start", flexFlow: "row wrap"}}>
         {
           this.state.pageCount
-            ? (<p style={{ margin: "0 10px" }}>Page {this.state.page}/{this.lastPage()}</p>)
-            : (<p/>)
+            ? (
+              <div>
+                <p style={{ margin: "0 10px" }}>Page {this.state.page}/{this.lastPage()}</p>
+              </div>
+            )
+            : (<div />)
         }
-        <label style={{ margin: "0 10px", fontSize: "20px" }}>
-          Page Count:
-          <select value={this.state.pageCount} onChange={this.handlePageCountChange}>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value={75}>75</option>
-            <option value={100}>100</option>
-            <option value={0}>All</option>
-          </select>
-        </label>
+        <button style={buttonStyle} onClick={this.handlePrevPageClick}>◄</button>
+        <button style={buttonStyle} onClick={this.handleNextPageClick}>►</button>
+
+        <div>
+          <label style={{ margin: "0 10px", fontSize: "20px" }}>
+            Page Count:
+            <select value={this.state.pageCount} onChange={this.handlePageCountChange}>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={75}>75</option>
+              <option value={100}>100</option>
+              <option value={0}>All</option>
+            </select>
+          </label>
+        </div>
         <label style={{ margin: "0 10px", fontSize: "20px" }}>
           Search:
           <input type="text" value={this.state.searchQuery} onChange={this.handleSearchChange}/>
