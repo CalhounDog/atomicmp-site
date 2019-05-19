@@ -3,6 +3,11 @@
 	src: url(../fonts/Overseer.otf) format("truetype");
 }
 
+@font-face {
+	font-family: "Monofonto";
+	src: url(../fonts/monofonto.ttf) format("truetype");
+}
+
 * {
 	padding:0;
 	margin:0;

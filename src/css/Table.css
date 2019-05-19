@@ -1,6 +1,12 @@
+@font-face {
+	font-family: "Monofonto";
+	src: url(../fonts/monofonto.ttf) format("truetype");
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
+  font-family: "Monofonto", monospace;
 }
 
 thead {

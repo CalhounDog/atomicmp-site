@@ -3,28 +3,38 @@ import Container from "../components/Container";
 import { auth } from '../utils/network';
 import Spinner from '../components/Spinner';
 import { Link } from 'react-router-dom';
+import "../css/Table.css";
 import IFaction from '../models/IFaction';
 
-interface ITargetUser {
-  faction?: IFaction;
+interface IUserInsecureData {
+  discord_id: string;
+  nickname: string;
   user_id: number;
   username: string;
   role: number;
+  faction?: (IFaction);
+  head: number;
+  hair: number;
+  hair_color: number;
+  is_male: boolean;
+  created_at: Date;
+  last_seen: Date;
 }
-
 interface IRegisterState {
   loading: boolean;
-  users: ITargetUser[];
+  users: IUserInsecureData[];
   page: number;
   pageCount: number;
+  searchQuery: string;
 }
 
 class UsersList extends React.Component <any, Partial<IRegisterState>> {
   public state: IRegisterState = {
     loading: true,
-    users: [] as ITargetUser[],
+    users: [] as IUserInsecureData[],
     page: 1 as number,
-    pageCount: 25 as number,
+    pageCount: 10 as number,
+    searchQuery: "",
   }
   
   constructor(props: any) {
@@ -36,6 +46,8 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
     this.handlePrevPageClick = this.handlePrevPageClick.bind(this);
     this.lastPage = this.lastPage.bind(this);
     this.handlePageCountChange = this.handlePageCountChange.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.filterUsersList = this.filterUsersList.bind(this);
   }
   
   public componentDidMount() {
@@ -51,11 +63,18 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
         {
           this.state.loading
           ? Spinner()
-          : this.state.users
+          : this.state.users.filter(this.filterUsersList).length > 0
             ? this.usersFound()
             : this.noUsersFound()
         }
       </Container>
+    )
+  }
+
+  public filterUsersList(user: IUserInsecureData) {
+    return (
+         user.username.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
+      || this.state.searchQuery === user.discord_id
     )
   }
 
@@ -77,11 +96,11 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
   }
 
   private lastPage() {
-    return Math.ceil(this.state.users.length / this.state.pageCount)
+    return Math.ceil(this.state.users.filter(this.filterUsersList).length / this.state.pageCount)
   }
 
   public renderUsersTable() {
-    let usersList = this.state.users;
+    let usersList = this.state.users.filter(this.filterUsersList);
 
     if (this.state.pageCount) {
       usersList = usersList.slice((this.state.page - 1) * this.state.pageCount, (this.state.page) * this.state.pageCount)
@@ -134,11 +153,11 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
   }
 
   public renderControlBar() {
-    const buttonStyle = {
+    const buttonStyle: React.CSSProperties = {
       backgroundColor: "var(--header-accent)",
       padding: "5px 17px",
       border: "2px solid white",
-      color: "white"
+      color: "white",
     }
     return (
       <div style={{display: "flex", justifyContent: "flex-start"}}>
@@ -152,6 +171,7 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
         <label style={{ margin: "0 10px", fontSize: "20px" }}>
           Page Count:
           <select value={this.state.pageCount} onChange={this.handlePageCountChange}>
+            <option value={10}>10</option>
             <option value={25}>25</option>
             <option value={50}>50</option>
             <option value={75}>75</option>
@@ -159,13 +179,19 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
             <option value={0}>All</option>
           </select>
         </label>
+        <label style={{ margin: "0 10px", fontSize: "20px" }}>
+          Search:
+          <input type="text" value={this.state.searchQuery} onChange={this.handleSearchChange}/>
+        </label>
       </div>
     )
   }
   public noUsersFound() {
     return (
       <div>
+        {this.renderControlBar()}
         <h1>Users not found!</h1>
+        {this.renderControlBar()}
       </div>
     )
   }
@@ -185,6 +211,10 @@ class UsersList extends React.Component <any, Partial<IRegisterState>> {
   public handlePageCountChange(event: React.ChangeEvent<HTMLSelectElement>) {
     event.preventDefault();
     this.setState({ pageCount: +event.target.value, page: 1})
+  }
+  public handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    this.setState({ searchQuery: event.target.value, page: 1 })
   }
 }
 

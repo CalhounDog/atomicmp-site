@@ -1,8 +1,10 @@
+import IFaction from "./IFaction";
+
 interface IUser {
   user_id: number;
   username: string;
   role: number;
-  faction: number;
+  faction: number | IFaction;
   health: number;
   hunger: number;
   thirst: number;
