@@ -46,8 +46,8 @@ function FAQPage(props: any) {
     },
     {
       shortcut: "tester",
-      question: "Can I be an alpha tester?",
-      answer: "Applying to be a tester is easy! Simply fill out the <a target=\"_blank noreferrer noopener\" href='https://goo.gl/forms/U1ce3DizYli4SszK2'>application form</a>. These get evaluated every Friday."
+      question: "Can I be an alpha Tester?",
+      answer: "Applying to be a Tester is easy! Simply fill out the <a target=\"_blank noreferrer noopener\" href='https://goo.gl/forms/U1ce3DizYli4SszK2'>application form</a>. These get evaluated every Friday."
     },
     {
       shortcut: "updates",
@@ -58,6 +58,26 @@ function FAQPage(props: any) {
       shortcut: "volunteering",
       question: "How can I help?",
       answer: "We aren't accepting monetary donations at this time, however we need all the developer help we can get. If you're familiar with developing for UE4, modding Fallout 4, creating assets such as clothing, NPCs, or weapons, animating, etc. we're love to have you on the team."
+    },
+    {
+      shortcut: "mod",
+      question: "Is this a mod for an existing game?",
+      answer: "No. This is a stand-alone platform created with Unreal Engine 4."
+    },
+    {
+      shortcut: "mod-support",
+      question: "Will mods ever be supported?",
+      answer: "We have no current plans to support custom content."
+    },
+    {
+      shortcut: "installation",
+      question: "How do I install AMP?",
+      answer: "Go to the <a href=\"/download\">Download</a> page and install the latest version. It will be >2Gb, so plan accordingly. Run the executable in the root of the game files to start the game. Note that while anyone can download the game, you will need a <a href=\"#tester\">Tester</a> account to actually enter the game."
+    },
+    {
+      shortcut: "assets",
+      question: "Do I need to have Fallout 4 installed for AMP to work?",
+      answer: "No, the game includes Fallout 4 assets that have been ported over to the Unreal Engine. <i>That said,</i> all Testers are required to have a legal copy of Fallout 4 on Steam."
     },
   ]
 
