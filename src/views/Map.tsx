@@ -60,16 +60,24 @@ class Map extends React.Component<IMapProps, IMapState> {
     this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
   }
 
+  public pollFactionData!: NodeJS.Timeout;
+
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
     this.fetchFactionMembers().then(factionMembersData => {
-      console.log(factionMembersData)
-      this.setState(state => ({ ...state, factionMembersData }))
+      this.setState({ factionMembersData })
     }).catch(console.error)
+    const ctx = this;
+    this.pollFactionData = setInterval(function () {
+      ctx.fetchFactionMembers().then(factionMembersData => {
+        ctx.setState({ factionMembersData })
+      }).catch(console.error)
+    }, 5000)
     this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
   }
   public componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyPress, false);
+    clearInterval(this.pollFactionData)
   }
   public render() {
 
