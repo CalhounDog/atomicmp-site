@@ -37,20 +37,25 @@ interface IMapState {
   playerLocation?: {
     x: number;
     y: number;
-    rotation?: number;
+    rotation: number;
   },
   zoom: number;
-  factionMembersData: IFactionMemberPositionData[]
+  factionMembersData: IFactionMemberPositionData[],
+  factionColor: string;
 }
 
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
     factionMembersData: [] as IFactionMemberPositionData[],
+    factionColor: "#FFFFFF",
     mapTheme: "map-theme-realistic",
     maxZoom: 3,
     minZoom: -1,
-    playerLocation: STARTING_COORDS,
+    playerLocation: {
+      ...STARTING_COORDS,
+      rotation: 0,
+    },
     zoom: 1,
   }
   constructor(props: IMapProps) {
@@ -64,16 +69,20 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
-    this.fetchFactionMembers().then(factionMembersData => {
-      this.setState({ factionMembersData })
+    this.fetchFactionMembers().then(({ users, color }) => {
+      this.setState({ factionMembersData: users, factionColor: color })
     }).catch(console.error)
     const ctx = this;
     this.pollFactionData = setInterval(function () {
-      ctx.fetchFactionMembers().then(factionMembersData => {
-        ctx.setState({ factionMembersData })
+      ctx.fetchFactionMembers().then(({users, color}) => {
+        ctx.setState({ factionMembersData: users, factionColor: color })
       }).catch(console.error)
     }, 5000)
-    this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
+    this.setState(state => ({ ...state, playerLocation: {
+      ...playerCoordsToImg(this.props.user),
+      rotation: this.props.user.rotation
+    }
+    }))
   }
   public componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyPress, false);
@@ -119,7 +128,7 @@ class Map extends React.Component<IMapProps, IMapState> {
     );
   }
   public renderFactionMembers() {
-    return this.state.factionMembersData.map(factionMember => <MapFactionMember key={factionMember.username} x={factionMember.x_pos} y={factionMember.y_pos} username={factionMember.username}/>)
+    return this.state.factionMembersData.map(factionMember => <MapFactionMember key={factionMember.username} color={this.state.factionColor} x={factionMember.x_pos} y={factionMember.y_pos} rotation={factionMember.rotation} username={factionMember.username}/>)
   }
 
   public renderLocationIcons() {
@@ -128,7 +137,7 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public renderPlayer() {
     if (this.state.playerLocation) {
-      return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />)
+      return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} rotation={this.state.playerLocation.rotation} fill="#af0606" />)
     } 
     return;
   }
@@ -159,9 +168,12 @@ class Map extends React.Component<IMapProps, IMapState> {
     }
   }
 
-  private async fetchFactionMembers(): Promise<IFactionMemberPositionData[]> {
+  private async fetchFactionMembers(): Promise<{users: IFactionMemberPositionData[], color: string}> {
     const { data } = await auth.get('/api/faction/'+this.props.user.faction);
-    return data.users.filter((user: IUser) => this.props.user.user_id !== user.user_id && (user.x_pos !== null && user.y_pos !== null && user.z_pos !== null));
+    return {
+      color: data.color,
+      users: data.users.filter((user: IUser) => this.props.user.user_id !== user.user_id && (user.x_pos !== null && user.y_pos !== null && user.z_pos !== null))
+    }
   }
 }
 
