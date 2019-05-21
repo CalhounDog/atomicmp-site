@@ -37,7 +37,7 @@ interface IMapState {
   playerLocation?: {
     x: number;
     y: number;
-    rotation?: number;
+    rotation: number;
   },
   zoom: number;
   factionMembersData: IFactionMemberPositionData[]
@@ -50,7 +50,10 @@ class Map extends React.Component<IMapProps, IMapState> {
     mapTheme: "map-theme-realistic",
     maxZoom: 3,
     minZoom: -1,
-    playerLocation: STARTING_COORDS,
+    playerLocation: {
+      ...STARTING_COORDS,
+      rotation: 0,
+    },
     zoom: 1,
   }
   constructor(props: IMapProps) {
@@ -73,7 +76,11 @@ class Map extends React.Component<IMapProps, IMapState> {
         ctx.setState({ factionMembersData })
       }).catch(console.error)
     }, 5000)
-    this.setState(state => ({ ...state, playerLocation: playerCoordsToImg(this.props.user)}))
+    this.setState(state => ({ ...state, playerLocation: {
+      ...playerCoordsToImg(this.props.user),
+      rotation: this.props.user.rotation
+    }
+    }))
   }
   public componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyPress, false);
@@ -119,7 +126,7 @@ class Map extends React.Component<IMapProps, IMapState> {
     );
   }
   public renderFactionMembers() {
-    return this.state.factionMembersData.map(factionMember => <MapFactionMember key={factionMember.username} x={factionMember.x_pos} y={factionMember.y_pos} username={factionMember.username}/>)
+    return this.state.factionMembersData.map(factionMember => <MapFactionMember key={factionMember.username} x={factionMember.x_pos} y={factionMember.y_pos} rotation={factionMember.rotation} username={factionMember.username}/>)
   }
 
   public renderLocationIcons() {
@@ -128,7 +135,7 @@ class Map extends React.Component<IMapProps, IMapState> {
 
   public renderPlayer() {
     if (this.state.playerLocation) {
-      return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} fill="#af0606" />)
+      return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} rotation={this.state.playerLocation.rotation} fill="#af0606" />)
     } 
     return;
   }
