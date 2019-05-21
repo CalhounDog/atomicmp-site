@@ -2,6 +2,7 @@ import * as queryString from "query-string";
 import * as React from 'react';
 import Container from "../components/Container";
 import backend from "../utils/network";
+import { Link } from "react-router-dom";
 
 interface IRecoveryState {
   error: string;
@@ -11,6 +12,7 @@ interface IRecoveryState {
     requestId: string;
   };
   submitting: boolean;
+  success: boolean;
 }
 
 class Recovery extends React.Component<any, Partial<IRecoveryState>> {
@@ -22,6 +24,7 @@ class Recovery extends React.Component<any, Partial<IRecoveryState>> {
       requestId: "",
     },
     submitting: false,
+    success: false,
   }
 
   constructor(props: any) {
@@ -42,7 +45,9 @@ class Recovery extends React.Component<any, Partial<IRecoveryState>> {
     return (
       <Container>
         <h1>Password Recovery</h1>
-        {this.renderForm()}
+        {!this.state.success
+          ? this.renderForm()
+          : this.renderSuccess()}
       </Container>
     )
   }
@@ -85,6 +90,15 @@ class Recovery extends React.Component<any, Partial<IRecoveryState>> {
     )
   }
 
+  private renderSuccess() {
+    return (
+      <div>
+        <h2>Success!</h2>
+        <Link to="/login">Return to Login</Link>
+      </div>
+    );
+  }
+
   private handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     this.setState({
@@ -108,6 +122,7 @@ class Recovery extends React.Component<any, Partial<IRecoveryState>> {
 
     try {
       await backend.post('/recovery', this.state.formData)
+      this.setState({ submitting: false, success: true })
     } catch (error) {
       if (error.response.data) {
         this.setState({error: error.response.data.message, submitting: false})
