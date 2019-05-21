@@ -32,7 +32,7 @@ class Download extends React.Component {
             return (
               <tr key={i}>
                 <td>{info.date.format("MMMM Do YYYY")}</td>
-                <td><a target="_blank noopener noreferrer" href={info.link} style={{textDecoration: "underline"}}>{info.version}</a></td>
+                <td>{info.version}</td>
                 <td>{info.changelog ? this.renderChangelogList(info.changelog) : undefined}</td>
               </tr>
             )
