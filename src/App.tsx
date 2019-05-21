@@ -25,6 +25,7 @@ import Register from "./views/Register";
 import User from './views/User';
 import FactionsList from "./views/FactionsList";
 import UsersList from "./views/UsersList";
+import FAQ from "./views/Faq";
 
 // tslint:disable: jsx-no-lambda
 
@@ -118,6 +119,14 @@ class App extends React.Component {
               path="/download"
               render={(routeProps) => (
                 <Download
+                  {...routeProps}
+                />
+              )}
+            />
+            <Route
+              path="/faq"
+              render={(routeProps) => (
+                <FAQ
                   {...routeProps}
                 />
               )}
