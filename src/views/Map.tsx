@@ -20,7 +20,7 @@ const STARTING_COORDS = {
   y: -26285.0,
 };
 
-interface IFactionMemberPositionData {
+interface IUserPositionData {
   id: string;
   username: string;
   x_pos: number;
@@ -40,14 +40,14 @@ interface IMapState {
     rotation: number;
   },
   zoom: number;
-  factionMembersData: IFactionMemberPositionData[],
+  factionMembersData: IUserPositionData[],
   factionColor: string;
 }
 
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
-    factionMembersData: [] as IFactionMemberPositionData[],
+    factionMembersData: [] as IUserPositionData[],
     factionColor: "#FFFFFF",
     mapTheme: "map-theme-realistic",
     maxZoom: 3,
@@ -63,21 +63,22 @@ class Map extends React.Component<IMapProps, IMapState> {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderPlayer = this.renderPlayer.bind(this);
     this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
+    this.pollMapData = this.pollMapData.bind(this);
   }
 
-  public pollFactionData!: NodeJS.Timeout;
-
-  public componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyPress, false);
+  public pollMapData() {
     this.fetchFactionMembers().then(({ users, color }) => {
       this.setState({ factionMembersData: users, factionColor: color })
     }).catch(console.error)
-    const ctx = this;
-    this.pollFactionData = setInterval(function () {
-      ctx.fetchFactionMembers().then(({users, color}) => {
-        ctx.setState({ factionMembersData: users, factionColor: color })
-      }).catch(console.error)
-    }, 5000)
+  };
+  public pollMapDataTicker!: NodeJS.Timeout;
+
+  public componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyPress, false);
+    this.pollMapData();
+
+    // Initialize map polling
+    this.pollMapDataTicker = setInterval(this.pollMapData, 5000)
     this.setState(state => ({ ...state, playerLocation: {
       ...playerCoordsToImg(this.props.user),
       rotation: this.props.user.rotation
@@ -86,7 +87,9 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
   public componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyPress, false);
-    clearInterval(this.pollFactionData)
+
+    // Terminate API polling function
+    clearInterval(this.pollMapDataTicker)
   }
   public render() {
 
@@ -123,7 +126,12 @@ class Map extends React.Component<IMapProps, IMapState> {
         />
         {this.renderLocationIcons()}
         {this.renderFactionMembers()}
-        {this.renderPlayer()}
+        
+        {/* Player should have highest z-index; render last */}
+        {this.state.playerLocation
+          ? this.renderPlayer()
+          : <div/>
+        }
       </LeafletMap>
     );
   }
@@ -136,10 +144,7 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
 
   public renderPlayer() {
-    if (this.state.playerLocation) {
-      return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} rotation={this.state.playerLocation.rotation} fill="#af0606" />)
-    } 
-    return;
+    return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} rotation={this.state.playerLocation.rotation} border={}/>)
   }
 
   public handleKeyPress(event: KeyboardEvent) {
@@ -168,11 +173,13 @@ class Map extends React.Component<IMapProps, IMapState> {
     }
   }
 
-  private async fetchFactionMembers(): Promise<{users: IFactionMemberPositionData[], color: string}> {
+  private async fetchFactionMembers(): Promise<{users: IUserPositionData[], color: string}> {
     const { data } = await auth.get('/api/faction/'+this.props.user.faction);
     return {
       color: data.color,
-      users: data.users.filter((user: IUser) => this.props.user.user_id !== user.user_id && (user.x_pos !== null && user.y_pos !== null && user.z_pos !== null))
+      users: data.users
+        .filter((user: IUser) => this.props.user.user_id !== user.user_id && (user.x_pos !== null && user.y_pos !== null && user.z_pos !== null))
+        .map((user: IUser) => )
     }
   }
 }
