@@ -13,7 +13,7 @@ import { mapImagePointToLatLng } from '../utils/helpers';
 import { playerCoordsToImg } from '../utils/helpers';
 import locations from "../utils/constants/locations";
 import { auth } from '../utils/network';
-import MapFactionMember from '../components/MapFactionMember';
+import IFaction from '../models/IFaction';
 
 const STARTING_COORDS = {
   x: 69449.953125,
@@ -23,9 +23,10 @@ const STARTING_COORDS = {
 interface IUserPositionData {
   id: string;
   username: string;
-  x_pos: number;
-  y_pos: number;
+  x: number;
+  y: number;
   rotation: number;
+  color: string;
 }
 
 interface IMapProps {
@@ -33,23 +34,19 @@ interface IMapProps {
 }
 
 interface IMapState {
-  mapTheme: string;
   playerLocation?: {
     x: number;
     y: number;
     rotation: number;
   },
   zoom: number;
-  factionMembersData: IUserPositionData[],
-  factionColor: string;
+  otherPlayersData: IUserPositionData[],
 }
 
 // tslint:disable: max-classes-per-file
 class Map extends React.Component<IMapProps, IMapState> {
   public state = {
-    factionMembersData: [] as IUserPositionData[],
-    factionColor: "#FFFFFF",
-    mapTheme: "map-theme-realistic",
+    otherPlayersData: [] as IUserPositionData[],
     maxZoom: 3,
     minZoom: -1,
     playerLocation: {
@@ -60,21 +57,20 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
   constructor(props: IMapProps) {
     super(props);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderPlayer = this.renderPlayer.bind(this);
-    this.fetchFactionMembers = this.fetchFactionMembers.bind(this);
+    this.fetchOtherPlayersData = this.fetchOtherPlayersData.bind(this);
     this.pollMapData = this.pollMapData.bind(this);
   }
 
   public pollMapData() {
-    this.fetchFactionMembers().then(({ users, color }) => {
-      this.setState({ factionMembersData: users, factionColor: color })
+    this.fetchOtherPlayersData().then(({ users }) => {
+      console.log(users)
+      this.setState({ otherPlayersData: users })
     }).catch(console.error)
   };
   public pollMapDataTicker!: NodeJS.Timeout;
 
   public componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyPress, false);
     this.pollMapData();
 
     // Initialize map polling
@@ -86,7 +82,6 @@ class Map extends React.Component<IMapProps, IMapState> {
     }))
   }
   public componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyPress, false);
 
     // Terminate API polling function
     clearInterval(this.pollMapDataTicker)
@@ -125,7 +120,7 @@ class Map extends React.Component<IMapProps, IMapState> {
           bounds={bounds}
         />
         {this.renderLocationIcons()}
-        {this.renderFactionMembers()}
+        {this.renderOtherPlayers()}
         
         {/* Player should have highest z-index; render last */}
         {this.state.playerLocation
@@ -135,51 +130,62 @@ class Map extends React.Component<IMapProps, IMapState> {
       </LeafletMap>
     );
   }
-  public renderFactionMembers() {
-    return this.state.factionMembersData.map(factionMember => <MapFactionMember key={factionMember.username} color={this.state.factionColor} x={factionMember.x_pos} y={factionMember.y_pos} rotation={factionMember.rotation} username={factionMember.username}/>)
-  }
 
   public renderLocationIcons() {
-    return locations.map(locationData => <MapLocation id={locationData.id} icon={locationData.icon} key={locationData.id} x={locationData.x} y={locationData.y}/>)
+    return locations.map(locationData => <MapLocation
+      id={locationData.id}
+      icon={locationData.icon}
+      key={locationData.id}
+      x={locationData.x}
+      y={locationData.y} />)
+  }
+
+  public renderOtherPlayers() {
+    return this.state.otherPlayersData.map(targetUser => <PlayerArrow
+      key={targetUser.username}
+      fill={targetUser.color}
+      x={targetUser.x}
+      y={targetUser.y}
+      rotation={targetUser.rotation}
+      username={targetUser.username}
+      />
+    )
   }
 
   public renderPlayer() {
-    return (<PlayerArrow user={this.props.user} x={this.state.playerLocation.x} y={this.state.playerLocation.y} rotation={this.state.playerLocation.rotation} border={}/>)
+    return (<PlayerArrow
+      username={this.props.user.username}
+      x={this.state.playerLocation.x}
+      y={this.state.playerLocation.y}
+      rotation={this.state.playerLocation.rotation}
+      fill={"rgb(26,255,128)"}
+      />)
   }
 
-  public handleKeyPress(event: KeyboardEvent) {
-    switch(event.keyCode) {
-      case(49): {
-        this.setState({mapTheme: "map-theme-realistic"});
-        break;
-      }
-      case(50): {
-        this.setState({mapTheme: "map-theme-green"});
-        break;
-      }
-      case(51): {
-        this.setState({mapTheme: "map-theme-amber"});
-        break;
-      }
-      case(52): {
-        this.setState({mapTheme: "map-theme-blue"});
-        break;
-      }
-      case(53): {
-        this.setState({mapTheme: "map-theme-white"});
-        break;
-      }
-      default: return;
-    }
-  }
+  private async fetchOtherPlayersData(): Promise<{ users: IUserPositionData[] }> {
+    const [factionsDataResponse, usersDataResponse] = await Promise.all([
+      auth.get("/api/factions"),
+      auth.get("/api/map")
+    ])
 
-  private async fetchFactionMembers(): Promise<{users: IUserPositionData[], color: string}> {
-    const { data } = await auth.get('/api/faction/'+this.props.user.faction);
+    const usersData = usersDataResponse.data.users;
+    const factionsData = factionsDataResponse.data.factions;
+
+    const users: any = usersData.map((user: IUser) => ({
+      ...user,
+      faction: factionsData.find((x: IFaction) => x.faction_id === user.faction) as IFaction
+    }))
+
     return {
-      color: data.color,
-      users: data.users
-        .filter((user: IUser) => this.props.user.user_id !== user.user_id && (user.x_pos !== null && user.y_pos !== null && user.z_pos !== null))
-        .map((user: IUser) => )
+      users: users
+        .filter((targetUser: IUser) => this.props.user.user_id !== targetUser.user_id && (targetUser.x_pos != null && targetUser.y_pos != null && targetUser.rotation != null))
+        .map((user: any) => ({
+          id: user.user_id,
+          username: user.username,
+          ...playerCoordsToImg({x_pos: user.x_pos, y_pos: user.y_pos}),
+          rotation: user.rotation,
+          color: (user.faction) ? user.faction.color : "#FFFFFF",
+        }))
     }
   }
 }

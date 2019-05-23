@@ -1,11 +1,10 @@
 import * as L from 'leaflet';
 import * as React from 'react';
 import { Popup, Marker } from 'react-leaflet';
-import IUser from '../models/IUser';
 import { mapImagePointToLatLng } from '../utils/helpers';
 
 interface IMapPlayerProps {
-  user: IUser;
+  username: string;
   x: number;
   y: number;
   fill?: string;
@@ -22,7 +21,7 @@ class MapPlayer extends React.Component<IMapPlayerProps, any> {
         style="transform: rotate(${this.props.rotation}deg);"
         height="${iconDimension}px" 
         width="${iconDimension}px">
-          <g id="map-player-${this.props.user.username}">
+          <g id="map-player-${this.props.username}">
             <path style="
               fill:${this.props.border || "#000000"};
               fill-opacity:1;"
@@ -42,7 +41,7 @@ class MapPlayer extends React.Component<IMapPlayerProps, any> {
     return (
       <Marker position={location} icon={locationIcon}>
         <Popup>
-          <span>{this.props.user.username}</span>
+          <span>{this.props.username}</span>
         </Popup>
       </Marker>
     )
