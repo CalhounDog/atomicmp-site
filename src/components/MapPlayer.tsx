@@ -18,7 +18,7 @@ class MapPlayer extends React.Component<IMapPlayerProps, any> {
     const iconDimension = 20;
     const locationIcon = new L.DivIcon({
       html: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 189" version="1.1"
-        style="transform: rotate(${this.props.rotation}deg);"
+        style="transform: rotate(${this.props.rotation}deg); margin-left: -${6}px"
         height="${iconDimension}px" 
         width="${iconDimension}px">
           <g id="map-player-${this.props.username}">
