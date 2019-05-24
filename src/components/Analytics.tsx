@@ -2,10 +2,10 @@ import React, { Component, } from "react";
 import { RouteComponentProps, Route } from "react-router-dom";
 import ReactGA from "react-ga";
 
-ReactGA.initialize('UA-140821960-1');
 
 class Analytics extends Component<RouteComponentProps<any>> {
   componentDidMount() {
+    ReactGA.initialize('UA-140821960-1');
     this.sendPageChange(this.props.location.pathname, this.props.location.search)
   }
 

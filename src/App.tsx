@@ -58,7 +58,7 @@ class App extends React.Component {
 
     return (
       <Router>
-        <div>
+        <>
           <AnalyticsTracker/>
           <Header user={this.state.user} logout={this.logout} />
           <Switch>
@@ -117,7 +117,7 @@ class App extends React.Component {
             <Redirect from="*" to="/" />
           </Switch>
           <div id="background" />
-        </div>
+        </>
       </Router>
     );
   }
