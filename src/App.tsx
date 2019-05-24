@@ -7,7 +7,6 @@ import {
   Switch
 } from "react-router-dom";
 import ReactGA from "react-ga";
-ReactGA.initialize('UA-140821960-1');
 
 import "./css/index.css";
 
@@ -29,6 +28,8 @@ import User from './views/User';
 import FactionsList from "./views/FactionsList";
 import UsersList from "./views/UsersList";
 import FAQ from "./views/Faq";
+
+ReactGA.initialize('UA-140821960-1');
 
 // tslint:disable: jsx-no-lambda
 
