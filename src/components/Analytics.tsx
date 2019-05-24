@@ -9,12 +9,11 @@ interface AnalyticsProps extends RouteComponentProps {
 
 class Analytics extends Component<AnalyticsProps> {
   componentDidMount() {
-    ReactGA.initialize([{
-      trackingId: "UA-140821960-1",
+    ReactGA.initialize("UA-140821960-1", {
       gaOptions: {
         userId: (this.props.user || {} as IUser).user_id + "",
       }
-    }]);
+    });
     this.sendPageChange(this.props.location.pathname, this.props.location.search)
   }
 
