@@ -1,11 +1,20 @@
 import React, { Component, } from "react";
 import { RouteComponentProps, Route } from "react-router-dom";
 import ReactGA from "react-ga";
+import IUser from "../models/IUser";
 
+interface AnalyticsProps extends RouteComponentProps {
+  user?: IUser;
+}
 
-class Analytics extends Component<RouteComponentProps<any>> {
+class Analytics extends Component<AnalyticsProps> {
   componentDidMount() {
-    ReactGA.initialize('UA-140821960-1');
+    ReactGA.initialize([{
+      trackingId: "UA-140821960-1",
+      gaOptions: {
+        userId: (this.props.user || {} as IUser).user_id + "",
+      }
+    }]);
     this.sendPageChange(this.props.location.pathname, this.props.location.search)
   }
 
