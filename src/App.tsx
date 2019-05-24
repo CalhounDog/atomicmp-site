@@ -29,8 +29,6 @@ import FactionsList from "./views/FactionsList";
 import UsersList from "./views/UsersList";
 import FAQ from "./views/Faq";
 
-ReactGA.initialize('UA-140821960-1');
-
 // tslint:disable: jsx-no-lambda
 
 interface IAppState {
@@ -156,6 +154,11 @@ class App extends React.Component {
         if (response.data !== "") {
           user = response.data;
         }
+        ReactGA.initialize('UA-140821960-1', {
+          gaOptions: {
+            userId: user.user_id,
+          }
+        });
         this.setState({ user });
       }
       catch(err) {
