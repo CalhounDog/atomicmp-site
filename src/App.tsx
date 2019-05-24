@@ -6,6 +6,9 @@ import {
   Route,
   Switch
 } from "react-router-dom";
+import ReactGA from "react-ga";
+ReactGA.initialize('UA-140821960-1');
+
 import "./css/index.css";
 
 import backend from "./utils/network";
@@ -42,6 +45,7 @@ class App extends React.Component {
 
   constructor(props: any) {
     super(props);
+    ReactGA.pageview(window.location.pathname + window.location.search);
     this.fetchAuth = this.fetchAuth.bind(this);
     this.logout = this.logout.bind(this);
     this.fetchAuth().then(() => {
