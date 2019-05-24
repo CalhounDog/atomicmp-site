@@ -6,7 +6,6 @@ import {
   Route,
   Switch
 } from "react-router-dom";
-import ReactGA from "react-ga";
 
 import "./css/index.css";
 
@@ -14,6 +13,7 @@ import backend from "./utils/network";
 
 import Header from "./components/Header";
 import Spinner from "./components/Spinner";
+import AnalyticsTracker from "./components/Analytics";
 
 import IUser from "./models/IUser";
 
@@ -28,7 +28,6 @@ import User from './views/User';
 import FactionsList from "./views/FactionsList";
 import UsersList from "./views/UsersList";
 import FAQ from "./views/Faq";
-
 // tslint:disable: jsx-no-lambda
 
 interface IAppState {
@@ -44,7 +43,6 @@ class App extends React.Component {
 
   constructor(props: any) {
     super(props);
-    ReactGA.pageview(window.location.pathname + window.location.search);
     this.fetchAuth = this.fetchAuth.bind(this);
     this.logout = this.logout.bind(this);
     this.fetchAuth().then(() => {
@@ -58,82 +56,64 @@ class App extends React.Component {
       return Spinner()
     }
 
-
     return (
       <Router>
         <div>
+          <AnalyticsTracker/>
           <Header user={this.state.user} logout={this.logout} />
           <Switch>
-            <Route exact={true} path="/" component={Home} />
+            <Route exact={true}
+              path="/"
+              component={Home}
+            />
             <Route
               path="/login"
-              render={(routeProps) => (
-                <Login {...routeProps} fetchAuth={() => this.fetchAuth()} />
-              )}
-            />
-            <Route
-              path="/register"
-              render={(routeProps) => (
-                <Register
-                  {...routeProps}
-                  fetchAuth={() => this.fetchAuth()}
-                />
-              )}
-            />
-            <Route path="/faction/:factionId" component={Faction} />
-            <Route path="/factions" component={FactionsList} />
-            <Route
-              path="/recovery"
-              render={(routeProps) => (
-                <Recovery
-                  {...routeProps}
-                />
-              )}
-            />
-            <Route
-              path="/user/:targetUserId"
-              render={(routeProps) => (
-                <User
-                  {...routeProps}
-                />
-              )}
-            />
-            <Route
-              path="/users"
-              render={(routeProps) => (
-                <UsersList
-                  {...routeProps}
-                />
-              )}
-            />
-            <Route
-              path="/map"
               render={(routeProps) => {
-                if (!this.state.user) {
-                  return <Redirect to="/"/>
-                } else {
-                  return <Map user={this.state.user}
-                    {...routeProps}
-                  />
-                }
+                return <Login {...routeProps} fetchAuth={this.fetchAuth}/>
               }}
             />
             <Route
+              path="/register"
+              render={(routeProps) => {
+                return <Register {...routeProps} fetchAuth={this.fetchAuth}/>
+              }}
+            />
+            <Route
+              path="/faction/:factionId"
+              component={Faction}
+            />
+            <Route
+              path="/factions"
+              component={FactionsList}
+            />
+            <Route
+              path="/recovery"
+              component={Recovery}
+            />
+            <Route
+              path="/user/:targetUserId"
+              component={User}
+            />
+            <Route
+              path="/users"
+              component={UsersList}
+            />
+            <Route
               path="/download"
-              render={(routeProps) => (
-                <Download
-                  {...routeProps}
-                />
-              )}
+              component={Download}
             />
             <Route
               path="/faq"
-              render={(routeProps) => (
-                <FAQ
-                  {...routeProps}
-                />
-              )}
+              component={FAQ}
             />
+            {
+              (this.state.user)
+                ? <Route
+                  path="/map"
+                  render={(props) => <Map user={this.state.user as IUser} {...props}/>}
+                />
+                : <Redirect to="/" />
+            }
             <Redirect from="*" to="/" />
           </Switch>
           <div id="background" />
@@ -154,11 +134,6 @@ class App extends React.Component {
         if (response.data !== "") {
           user = response.data;
         }
-        ReactGA.initialize('UA-140821960-1', {
-          gaOptions: {
-            userId: user.user_id,
-          }
-        });
         this.setState({ user });
       }
       catch(err) {
