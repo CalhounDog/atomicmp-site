@@ -59,7 +59,7 @@ class App extends React.Component {
     return (
       <Router>
         <>
-          <AnalyticsTracker/>
+          <AnalyticsTracker user={this.state.user}/>
           <Header user={this.state.user} logout={this.logout} />
           <Switch>
             <Route exact={true}

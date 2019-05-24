@@ -36,8 +36,8 @@ class Analytics extends Component<AnalyticsProps> {
   }
 }
 
-const AnalyticsTracker = () => {
-  return <Route component={Analytics} />
+const AnalyticsTracker = ({user}: {user?: IUser}) => {
+  return <Route render={(routerProps) => <Analytics user={user} {...routerProps}/>} />
 }
 
 export default AnalyticsTracker;
