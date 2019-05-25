@@ -70,17 +70,20 @@ class Map extends React.Component<IMapProps, IMapState> {
   };
   public pollMapDataTicker!: NodeJS.Timeout;
   public pollMapDelay: number = 3000;
+  public factionsData!: IFaction[];
 
   public componentDidMount() {
+    const ctx = this;
+    auth.get("/api/factions").then(({data}) => ctx.factionsData = data.factions)
     this.pollMapData();
 
     // Initialize map polling
     this.pollMapDataTicker = setInterval(this.pollMapData, this.pollMapDelay)
-    this.setState(state => ({ ...state, playerLocation: {
+    this.setState({ playerLocation: {
       ...playerCoordsToImg(this.props.user),
       rotation: this.props.user.rotation
     }
-    }))
+    })
   }
   public componentWillUnmount() {
 
@@ -164,17 +167,13 @@ class Map extends React.Component<IMapProps, IMapState> {
   }
 
   private async fetchOtherPlayersData(): Promise<{ users: IUserPositionData[] }> {
-    const [factionsDataResponse, usersDataResponse] = await Promise.all([
-      auth.get("/api/factions"),
-      auth.get("/api/map")
-    ])
+    const usersDataResponse = await auth.get("/api/map")
 
     const usersData = usersDataResponse.data.users;
-    const factionsData = factionsDataResponse.data.factions;
 
     const users: any = usersData.map((user: IUser) => ({
       ...user,
-      faction: factionsData.find((x: IFaction) => x.faction_id === user.faction) as IFaction
+      faction: this.factionsData.find((faction: IFaction) => faction.faction_id === user.faction) as IFaction
     }))
 
     return {
