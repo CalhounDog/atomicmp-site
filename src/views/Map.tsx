@@ -69,12 +69,13 @@ class Map extends React.Component<IMapProps, IMapState> {
     }).catch(console.error)
   };
   public pollMapDataTicker!: NodeJS.Timeout;
+  public pollMapDelay: number = 3000;
 
   public componentDidMount() {
     this.pollMapData();
 
     // Initialize map polling
-    this.pollMapDataTicker = setInterval(this.pollMapData, 5000)
+    this.pollMapDataTicker = setInterval(this.pollMapData, this.pollMapDelay)
     this.setState(state => ({ ...state, playerLocation: {
       ...playerCoordsToImg(this.props.user),
       rotation: this.props.user.rotation
