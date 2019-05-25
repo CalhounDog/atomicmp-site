@@ -14,6 +14,14 @@ function dateConstructor(str: string): moment.Moment {
 const buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "Fixed floating guns appearing on crash",
+      ],
+      date: "May 22, 2019",
+      link: "http://download2265.mediafire.com/57nhzpxi0gag/h1i15jg76m3s2wt/AMP.rar",
+      version: "0.3.9",
+    },
+    {
+      changelog: [
         "New Guns",
         "Changes to Bullet System",
         "Tweaked Ambient Occlusion",
