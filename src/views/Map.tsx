@@ -146,7 +146,7 @@ class Map extends React.Component<IMapProps, IMapState> {
       fill={targetUser.color}
       x={targetUser.x}
       y={targetUser.y}
-      rotation={targetUser.rotation}
+      rotation={targetUser.rotation + 90}
       username={targetUser.username}
       />
     )
@@ -157,7 +157,7 @@ class Map extends React.Component<IMapProps, IMapState> {
       username={this.props.user.username}
       x={this.state.playerLocation.x}
       y={this.state.playerLocation.y}
-      rotation={this.state.playerLocation.rotation}
+      rotation={this.state.playerLocation.rotation + 90}
       fill={"rgb(26,255,128)"}
       />)
   }
