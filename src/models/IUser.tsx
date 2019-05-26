@@ -1,6 +1,7 @@
 import IFaction from "./IFaction";
 
 interface IUser {
+  discord_id: string;
   user_id: number;
   username: string;
   role: number;

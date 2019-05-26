@@ -7,6 +7,7 @@ import IFaction from '../models/IFaction';
 import moment, { Moment } from 'moment';
 
 interface ITargetUser {
+  discord_id: string;
   faction?: IFaction;
   id: number;
   username: string;
@@ -83,6 +84,7 @@ class User extends React.Component <any, Partial<IUserState>> {
             </p>
           : <p></p>
         }
+        <p>Discord ID: {this.state.targetUser.discord_id}</p>
         <p>Joined: {this.state.targetUser.created_at.fromNow()}</p>
         <p>Last Seen: {this.state.targetUser.last_seen.fromNow()}</p>
       </div>
