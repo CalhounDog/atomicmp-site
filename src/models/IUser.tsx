@@ -5,7 +5,7 @@ interface IUser {
   user_id: number;
   username: string;
   role: number;
-  faction: number | IFaction;
+  faction?: number | IFaction;
   health: number;
   hunger: number;
   thirst: number;

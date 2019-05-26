@@ -58,14 +58,17 @@ class Map extends React.Component<IMapProps, IMapState> {
   constructor(props: IMapProps) {
     super(props);
     this.renderPlayer = this.renderPlayer.bind(this);
-    this.fetchOtherPlayersData = this.fetchOtherPlayersData.bind(this);
+    this.fetchPlayersData = this.fetchPlayersData.bind(this);
     this.pollMapData = this.pollMapData.bind(this);
   }
 
   public pollMapData() {
-    this.fetchOtherPlayersData().then(({ users }) => {
-      console.log(users)
-      this.setState({ otherPlayersData: users })
+    this.fetchPlayersData().then(({ player, users }) => {
+      this.setState({
+        playerLocation: {
+          ...playerCoordsToImg(player),
+          rotation: player.rotation
+        }, otherPlayersData: users })
     }).catch(console.error)
   };
   public pollMapDataTicker!: NodeJS.Timeout;
@@ -79,11 +82,6 @@ class Map extends React.Component<IMapProps, IMapState> {
 
     // Initialize map polling
     this.pollMapDataTicker = setInterval(this.pollMapData, this.pollMapDelay)
-    this.setState({ playerLocation: {
-      ...playerCoordsToImg(this.props.user),
-      rotation: this.props.user.rotation
-    }
-    })
   }
   public componentWillUnmount() {
 
@@ -166,7 +164,7 @@ class Map extends React.Component<IMapProps, IMapState> {
       />)
   }
 
-  private async fetchOtherPlayersData(): Promise<{ users: IUserPositionData[] }> {
+  private async fetchPlayersData(): Promise<{ player: any, users: IUserPositionData[] }> {
     const usersDataResponse = await auth.get("/api/map")
 
     const usersData = usersDataResponse.data.users;
@@ -177,6 +175,7 @@ class Map extends React.Component<IMapProps, IMapState> {
     }))
 
     return {
+      player: usersDataResponse.data.player,
       users: users
         .filter((targetUser: IUser) => this.props.user.user_id !== targetUser.user_id && (targetUser.x_pos != null && targetUser.y_pos != null && targetUser.rotation != null))
         .map((user: any) => ({
