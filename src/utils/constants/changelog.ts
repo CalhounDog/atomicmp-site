@@ -14,6 +14,14 @@ function dateConstructor(str: string): moment.Moment {
 const buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "Performance Fixes",
+      ],
+      date: "Jun 8, 2019",
+      link: "https://drive.google.com/file/d/1i7epzMKsyT3OK0j6280yDznHWMS9-KGj/view?usp=sharing",
+      version: "0.4.0",
+    },
+    {
+      changelog: [
         "Fixed floating guns appearing on crash",
       ],
       date: "May 22, 2019",
