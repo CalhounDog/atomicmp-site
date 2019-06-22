@@ -14,6 +14,15 @@ function dateConstructor(str: string): moment.Moment {
 const buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "Ai can now lunge and should not follow players after respawn",
+        "Fixed Item Spamming From Containers",
+      ],
+      date: "Jun 22, 2019",
+      link: "https://drive.google.com/file/d/1-Zg8kYsnKhMvZcbT7X5M2cQ5PqVslqU_/view?usp=sharing",
+      version: "0.4.1",
+    },
+    {
+      changelog: [
         "Performance Fixes",
       ],
       date: "Jun 8, 2019",
