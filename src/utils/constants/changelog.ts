@@ -14,6 +14,15 @@ function dateConstructor(str: string): moment.Moment {
 const buildsList: IBuildInfo[] = [
     {
       changelog: [
+        "Removed Picnic Tables in Spawn",
+        "Updated Engine Version",
+        "First WIP of the shop system",
+      ],
+      date: "Jul 14, 2019",
+      link: "https://drive.google.com/open?id=1kus_oFTQgr_4mrdGbpAA6YD4rDQ0C70f",
+      version: "0.4.2",
+    },    {
+      changelog: [
         "Ai can now lunge and should not follow players after respawn",
         "Fixed Item Spamming From Containers",
       ],
